@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareeZ | Your Career Roadmap</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #06080f;
+      --surface: #0d1117;
+      --card: #111827;
+      --border: rgba(99, 102, 241, .15);
+      --accent: #6366f1;
+      --accent2: #f97316;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --text: #f1f5f9;
+      --muted: #64748b;
+      --sidebar: 260px
+    }
+
+    [data-theme="light"] {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --card: #f0f4ff;
+      --border: rgba(99, 102, 241, .15);
+      --text: #0f172a;
+      --muted: #64748b;
+    }
+
+    [data-theme="light"] .tip-item { color: rgba(15, 23, 42, 0.85); }
+    [data-theme="light"] .tips-box { background: rgba(245,158,11,.07); }
+    [data-theme="light"] .chip-upcoming { background: #e2e8f0; color: #64748b; }
+    [data-theme="light"] .stage-card { box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: var(--sidebar);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      overflow-y: auto;
+      z-index: 50
+    }
+
+    .s-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: 2rem;
+      text-decoration: none
+    }
+
+    .s-logo i {
+      color: var(--accent)
+    }
+
+    .s-user {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1.5rem
+    }
+
+    .s-user-name {
+      font-weight: 700;
+      font-size: .95rem;
+      margin-bottom: .2rem
+    }
+
+    .s-user-career {
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 600
+    }
+
+    .s-nav {
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+      flex: 1
+    }
+
+    .s-nav a {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .88rem;
+      transition: all .2s
+    }
+
+    .s-nav a:hover {
+      background: var(--card);
+      color: var(--text)
+    }
+
+    .s-nav a.active {
+      background: rgba(99, 102, 241, .12);
+      color: var(--accent);
+      border: 1px solid rgba(99, 102, 241, .2)
+    }
+
+    .s-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: auto
+    }
+
+    .s-logout {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #ef4444;
+      font-weight: 600;
+      font-size: .88rem;
+      transition: background .2s
+    }
+
+    .s-logout:hover {
+      background: rgba(239, 68, 68, .08)
+    }
+
+    .s-theme {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .88rem;
+      transition: background .2s;
+      margin-bottom: .25rem
+    }
+
+    .s-theme:hover {
+      background: var(--card);
+      color: var(--text)
+    }
+
+    /* MAIN */
+    .main {
+      flex: 1;
+      margin-left: var(--sidebar);
+      padding: 2.5rem 3rem;
+      max-width: calc(100% - var(--sidebar))
+    }
+
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem
+    }
+
+    .career-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: .3rem
+    }
+
+    .career-subtitle {
+      color: var(--muted);
+      font-size: .95rem
+    }
+
+    .change-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: .5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Manrope', sans-serif;
+      font-size: .83rem;
+      font-weight: 600;
+      transition: all .2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem
+    }
+
+    .change-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    /* PROGRESS */
+    .progress-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.5rem;
+      align-items: center
+    }
+
+    .prog-left h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      margin-bottom: .3rem
+    }
+
+    .prog-left p {
+      color: var(--muted);
+      font-size: .85rem;
+      margin-bottom: 1rem
+    }
+
+    .prog-bar {
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden
+    }
+
+    .prog-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #818cf8);
+      border-radius: 4px;
+      transition: width .8s ease
+    }
+
+    .prog-stat {
+      text-align: center
+    }
+
+    .prog-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--success)
+    }
+
+    .prog-label {
+      font-size: .75rem;
+      color: var(--muted)
+    }
+
+    .prog-stages {
+      display: flex;
+      gap: .5rem;
+      margin-top: .75rem;
+      flex-wrap: wrap
+    }
+
+    .stage-chip {
+      padding: .25rem .7rem;
+      border-radius: 50px;
+      font-size: .72rem;
+      font-weight: 700
+    }
+
+    .chip-done {
+      background: rgba(34, 197, 94, .12);
+      color: var(--success)
+    }
+
+    .chip-active {
+      background: rgba(99, 102, 241, .12);
+      color: #a5b4fc
+    }
+
+    .chip-upcoming {
+      background: var(--card);
+      color: var(--muted)
+    }
+
+    /* TIMELINE */
+    .timeline {
+      position: relative;
+      padding-left: 3rem
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), rgba(99, 102, 241, .1))
+    }
+
+    .stage {
+      margin-bottom: 2rem;
+      position: relative
+    }
+
+    .stage-dot {
+      position: absolute;
+      left: -41px;
+      top: 1.4rem;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 3px solid var(--bg);
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .6rem;
+      font-weight: 700;
+      color: #fff
+    }
+
+    .dot-done {
+      background: var(--success)
+    }
+
+    .dot-active {
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, .2)
+    }
+
+    .dot-locked {
+      background: var(--muted)
+    }
+
+    .stage-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color .3s
+    }
+
+    .stage-card.done {
+      border-color: rgba(34, 197, 94, .25)
+    }
+
+    .stage-card.active {
+      border-color: rgba(99, 102, 241, .4);
+      box-shadow: 0 0 0 1px rgba(99, 102, 241, .12), 0 8px 30px rgba(99, 102, 241, .08)
+    }
+
+    .stage-card.locked {
+      opacity: .65
+    }
+
+    .stage-header {
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none
+    }
+
+    .stage-header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem
+    }
+
+    .stage-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: .85rem;
+      flex-shrink: 0
+    }
+
+    .num-done {
+      background: rgba(34, 197, 94, .12);
+      color: var(--success)
+    }
+
+    .num-active {
+      background: rgba(99, 102, 241, .12);
+      color: var(--accent)
+    }
+
+    .num-locked {
+      background: var(--card);
+      color: var(--muted)
+    }
+
+    .stage-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: .2rem
+    }
+
+    .stage-desc {
+      color: var(--muted);
+      font-size: .83rem;
+      line-height: 1.4
+    }
+
+    .stage-badge {
+      padding: .3rem .85rem;
+      border-radius: 50px;
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      flex-shrink: 0
+    }
+
+    .badge-done {
+      background: rgba(34, 197, 94, .12);
+      color: var(--success)
+    }
+
+    .badge-active {
+      background: rgba(99, 102, 241, .12);
+      color: #a5b4fc
+    }
+
+    .badge-locked {
+      background: var(--card);
+      color: var(--muted)
+    }
+
+    .stage-toggle {
+      color: var(--muted);
+      margin-left: .5rem;
+      transition: transform .3s;
+      font-size: .85rem
+    }
+
+    .stage-toggle.open {
+      transform: rotate(180deg)
+    }
+
+    .stage-body {
+      display: none;
+      border-top: 1px solid var(--border);
+      padding: 1.5rem
+    }
+
+    .stage-body.open {
+      display: block
+    }
+
+    /* BODY CONTENT */
+    .body-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem
+    }
+
+    @media(max-width:900px) {
+      .body-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .info-section {
+      margin-bottom: 1.25rem
+    }
+
+    .info-title {
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: .75rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem
+    }
+
+    .info-title i {
+      color: var(--accent)
+    }
+
+    .focus-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem
+    }
+
+    .focus-item {
+      display: flex;
+      align-items: flex-start;
+      gap: .65rem;
+      font-size: .88rem;
+      line-height: 1.5;
+      color: var(--text)
+    }
+
+    .focus-item i {
+      color: var(--accent);
+      font-size: .75rem;
+      margin-top: .18rem;
+      flex-shrink: 0
+    }
+
+    .resource-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem
+    }
+
+    .res-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: .35rem .85rem;
+      border-radius: 8px;
+      font-size: .8rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color .2s
+    }
+
+    .res-tag:hover {
+      border-color: var(--accent)
+    }
+
+    .res-tag i {
+      color: var(--accent);
+      font-size: .7rem
+    }
+
+    .res-tag.yt i {
+      color: #ff0000
+    }
+
+    .res-tag.book i {
+      color: var(--warning)
+    }
+
+    .res-tag.web i {
+      color: var(--success)
+    }
+
+    .exam-info {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.2rem;
+      border: 1px solid var(--border)
+    }
+
+    .exam-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: .5rem
+    }
+
+    .exam-rows {
+      display: flex;
+      flex-direction: column;
+      gap: .4rem
+    }
+
+    .exam-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: .83rem
+    }
+
+    .exam-row span:first-child {
+      color: var(--muted)
+    }
+
+    .exam-row span:last-child {
+      font-weight: 600
+    }
+
+    .tips-box {
+      background: rgba(245, 158, 11, .06);
+      border: 1px solid rgba(245, 158, 11, .2);
+      border-radius: 12px;
+      padding: 1.2rem
+    }
+
+    .tip-item {
+      display: flex;
+      gap: .6rem;
+      font-size: .85rem;
+      line-height: 1.5;
+      margin-bottom: .6rem;
+      color: rgba(241, 245, 249, .85)
+    }
+
+    .tip-item:last-child {
+      margin-bottom: 0
+    }
+
+    .tip-item i {
+      color: var(--warning);
+      flex-shrink: 0;
+      margin-top: .1rem
+    }
+
+    .mark-btn {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--success);
+      color: #fff;
+      border: none;
+      padding: .7rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700;
+      font-size: .85rem;
+      margin-top: 1.5rem;
+      transition: all .2s
+    }
+
+    .mark-btn:hover {
+      background: #16a34a;
+      transform: translateY(-1px)
+    }
+
+    .mark-btn.undone {
+      background: var(--card);
+      color: var(--muted);
+      border: 1px solid var(--border)
+    }
+
+    .mark-btn.undone:hover {
+      border-color: var(--accent);
+      color: var(--text)
+    }
+
+    /* CAREER SWITCHER */
+    .career-switcher {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .7);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      display: none
+    }
+
+    .switcher-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto
+    }
+
+    .switcher-box h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      margin-bottom: .5rem
+    }
+
+    .switcher-box p {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-bottom: 1.5rem
+    }
+
+    .career-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: .75rem
+    }
+
+    .career-item {
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all .2s;
+      background: var(--card)
+    }
+
+    .career-item:hover,
+    .career-item.selected {
+      border-color: var(--accent);
+      background: rgba(99, 102, 241, .08)
+    }
+
+    .ci-icon {
+      font-size: 1.6rem;
+      margin-bottom: .4rem
+    }
+
+    .ci-name {
+      font-size: .78rem;
+      font-weight: 700;
+      line-height: 1.3
+    }
+
+    .switcher-actions {
+      display: flex;
+      gap: .75rem;
+      margin-top: 1.5rem;
+      justify-content: flex-end
+    }
+
+    .btn-cancel {
+      padding: .7rem 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Manrope', sans-serif;
+      font-weight: 600;
+      cursor: pointer
+    }
+
+    .btn-apply {
+      padding: .7rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700;
+      cursor: pointer
+    }
+
+    .hamburger {
+      display: none;
+      position: fixed;
+      top: .9rem;
+      left: .9rem;
+      z-index: 400;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1.1rem;
+      transition: all .2s;
+      box-shadow: 0 2px 10px rgba(0,0,0,.15);
+    }
+    .hamburger:hover { border-color: var(--accent); color: var(--accent); }
+    .mob-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 199;
+      backdrop-filter: blur(3px);
+    }
+    .mob-overlay.open { display: block; }
+
+    @media(max-width:768px) {
+      .hamburger { display: flex; }
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform .3s cubic-bezier(.4,0,.2,1);
+        z-index: 200;
+        box-shadow: 4px 0 24px rgba(0,0,0,.25);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main {
+        margin-left: 0;
+        padding: 4.5rem 1.25rem 1.5rem;
+        max-width: 100%;
+      }
+      .timeline { padding-left: 2rem; }
+      .stage-dot { left: -31px; }
+      .body-grid { grid-template-columns: 1fr; }
+      .top-header { flex-direction: column; }
+    }
+
+    /* VIDEO MODAL */
+    .video-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .video-modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .video-modal-content {
+      width: 90%;
+      max-width: 900px;
+      background: var(--surface);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      transform: scale(0.95);
+      transition: transform 0.3s;
+    }
+
+    .video-modal.show .video-modal-content {
+      transform: scale(1);
+    }
+
+    .video-modal-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .video-modal-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .close-modal {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: color 0.2s;
+    }
+
+    .close-modal:hover {
+      color: #ef4444;
+    }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      height: 0;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <button class="hamburger" id="mobMenuBtn" onclick="window.toggleMobMenu()" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+  <div class="mob-overlay" id="mobOverlay" onclick="window.closeMobMenu()"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="dashboard.html" class="s-logo"><i class="fa-solid fa-graduation-cap"></i> CareeZ</a>
+    <div class="s-user">
+      <div class="s-user-name" id="sUsername">Loading...</div>
+      <div class="s-user-career" id="sCareer">—</div>
+    </div>
+    <nav class="s-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="Careers.html"><i class="fa-solid fa-briefcase"></i> Careers</a>
+      <a href="roadmap.html" class="active"><i class="fa-solid fa-road"></i> Roadmaps</a>
+      <a href="Exams.html"><i class="fa-solid fa-file-lines"></i> Exams</a>
+      <a href="PYQs.html"><i class="fa-solid fa-book-open"></i> PYQs</a>
+      <a href="Resources.html"><i class="fa-solid fa-folder"></i> Resources</a>
+      <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+    </nav>
+
+    <div class="s-bottom">
+      <div class="s-theme" id="themeToggleBtn" onclick="window.toggleTheme()">
+        <i class="fa-solid fa-moon" id="themeIcon"></i> <span id="themeLabel">Dark Mode</span>
+      </div>
+      <div class="s-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="top-header">
+      <div>
+        <div class="career-title" id="mainCareerTitle">Loading...</div>
+        <div class="career-subtitle">Follow each stage to achieve your goal — from where you are now to career success.
+        </div>
+      </div>
+      <a onclick="openSwitcher()" class="change-btn"><i class="fa-solid fa-arrows-rotate"></i> Change Career</a>
+    </div>
+
+    <div class="progress-card">
+      <div class="prog-left">
+        <h3>Your Journey Progress</h3>
+        <p id="progressDesc">Calculating your current stage...</p>
+        <div class="prog-bar">
+          <div class="prog-fill" id="progFill" style="width:0%"></div>
+        </div>
+        <div class="prog-stages" id="stageChips"></div>
+      </div>
+      <div class="prog-stat">
+        <div class="prog-num" id="progPct">0%</div>
+        <div class="prog-label">Completed</div>
+        <div style="margin-top:.5rem;color:var(--muted);font-size:.75rem" id="stagesLeftText">—</div>
+      </div>
+    </div>
+
+    <div class="timeline" id="timeline"></div>
+  </main>
+
+  <!-- Video Modal -->
+  <div class="video-modal" id="videoModal">
+    <div class="video-modal-content">
+      <div class="video-modal-header">
+        <div class="video-modal-title" id="videoModalTitle">Test Proof Video</div>
+        <button class="close-modal" id="closeVideoModal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="video-wrapper">
+        <iframe id="videoIframe" src="" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAREER SWITCHER -->
+  <div class="career-switcher" id="switcher">
+    <div class="switcher-box">
+      <h2>Switch Career Path</h2>
+      <p>Choose a different career to see its complete roadmap</p>
+      <div class="career-grid" id="switcherGrid">
+        <div class="career-item" onclick="pickCareer('IAS / Civil Services',this)">
+          <div class="ci-icon">🏛️</div>
+          <div class="ci-name">IAS / Civil Services</div>
+        </div>
+        <div class="career-item" onclick="pickCareer('MBBS / Doctor',this)">
+          <div class="ci-icon">⚕️</div>
+          <div class="ci-name">Doctor (MBBS)</div>
+        </div>
+        <div class="career-item" onclick="pickCareer('Software Engineer',this)">
+          <div class="ci-icon">💻</div>
+          <div class="ci-name">Software Engineer</div>
+        </div>
+        <div class="career-item" onclick="pickCareer('Chartered Accountant',this)">
+          <div class="ci-icon">📊</div>
+          <div class="ci-name">Chartered Accountant</div>
+        </div>
+        <div class="career-item" onclick="pickCareer('Bank PO / Clerk',this)">
+          <div class="ci-icon">🏦</div>
+          <div class="ci-name">Bank PO / Clerk</div>
+        </div>
+        <div class="career-item" onclick="pickCareer('Defence Services',this)">
+          <div class="ci-icon">⚔️</div>
+          <div class="ci-name">Defence Services</div>
+        </div>
+        <div class="career-item" onclick="pickCareer('Teacher / Professor',this)">
+          <div class="ci-icon">🎓</div>
+          <div class="ci-name">Teacher / Professor</div>
+        </div>
+        <div class="career-item" onclick="pickCareer('IPS / Police Services',this)">
+          <div class="ci-icon">👮</div>
+          <div class="ci-name">IPS / Police</div>
+        </div>
+      </div>
+      <div class="switcher-actions">
+        <button class="btn-cancel" onclick="closeSwitcher()">Cancel</button>
+        <button class="btn-apply" onclick="applySwitch()">Apply Change</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">    // IMPORT
+    import { supabase, requireAuth, signOut } from './supabase-config.js';
+
+    // Theme init
+    (function() {
+      const t = localStorage.getItem('careez_theme') || 'dark';
+      if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    })();
+    window.toggleTheme = function() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('careez_theme','dark'); }
+      else { document.documentElement.setAttribute('data-theme','light'); localStorage.setItem('careez_theme','light'); }
+      _updateThemeBtn();
+    };
+    function _updateThemeBtn() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+      if (icon) icon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      if (label) label.textContent = isLight ? 'Light Mode' : 'Dark Mode';
+    }
+    _updateThemeBtn();
+
+    window.toggleMobMenu = function() {
+      document.querySelector('.sidebar').classList.toggle('open');
+      document.getElementById('mobOverlay').classList.toggle('open');
+    };
+    window.closeMobMenu = function() {
+      document.querySelector('.sidebar').classList.remove('open');
+      document.getElementById('mobOverlay').classList.remove('open');
+    };
+    document.querySelectorAll('.s-nav a').forEach(a => a.addEventListener('click', window.closeMobMenu));
+
+    // =========================================================
+    // MEGA CAREER DATA — Detailed from scratch to achievement
+    // =========================================================
+    const CAREER_DATA = {
+  "IAS / Civil Services": {
+    "icon": "🏛️",
+    "exam": "UPSC CSE",
+    "duration": "5–10 years",
+    "stages": [
+      {
+        "title": "Foundation: Class 10",
+        "desc": "Build basic academic strength. This is where curiosity about society and governance should begin.",
+        "exam": null,
+        "focus": [
+          "Score well in all subjects — especially Social Science, History, Geography, and English",
+          "Read newspapers (any local/national) to stay updated on current events",
+          "Join debates and public speaking activities in school",
+          "Read NCERT Social Science books thoroughly (Class 6–10)",
+          "Develop a reading habit — biographies, general knowledge books"
+        ],
+        "tips": [
+          "📰 Start reading one newspaper daily. The habit formed now will be your biggest advantage later.",
+          "🗣️ Join any school quiz club or debate team — UPSC tests your communication personality.",
+          "📚 History and Geography are the backbone of UPSC GS — love them from Class 10 itself."
+        ]
+      },
+      {
+        "title": "Intermediate (Class 11–12)",
+        "desc": "Any stream is acceptable for UPSC. Arts/Humanities students have a slight advantage in GS, but science students also excel.",
+        "exam": null,
+        "focus": [
+          "Score well in 12th boards — minimum 55% required for many optional subjects",
+          "Start reading NCERT History (Themes in Indian History Parts I, II, III)",
+          "Read NCERT Geography (Class 11 & 12) — Physical & Indian Geography",
+          "Begin NCERT Political Science (Class 11 & 12) — Indian Constitution basics",
+          "Subscribe to a monthly magazine like Pratiyogita Darpan or Yojana",
+          "Identify your UPSC optional subject based on your interest"
+        ],
+        "tips": [
+          "🎯 If choosing Arts: pick History + Political Science for the best UPSC base.",
+          "📖 Start Laxmikanth's Indian Polity — it's the UPSC Bible for Polity. Just start reading, don't memorize yet.",
+          "🗞️ Subscribe to 'The Hindu' or read it free online daily."
+        ]
+      },
+      {
+        "title": "Graduation (Bachelor's Degree)",
+        "desc": "Any bachelor's degree makes you UPSC-eligible. This phase is critical — dedicate 1–2 years to serious UPSC preparation alongside your degree.",
+        "exam": {
+          "name": "No exam required",
+          "eligibility": "Any stream",
+          "mode": "N/A",
+          "frequency": "N/A"
+        },
+        "focus": [
+          "Choose a graduation subject that can become your UPSC Optional (e.g., History, Political Science, Sociology, Geography, Public Administration)",
+          "Complete all NCERT books (Class 6–12) for History, Geography, Polity, Economics, Science",
+          "Read Laxmikanth's Indian Polity (full book — the most important UPSC book)",
+          "Start Spectrum's Modern History book",
+          "Read Ramesh Singh's Indian Economy",
+          "Begin daily newspaper reading with note-making (current affairs)",
+          "Join NCC, NSS, or any social work to build personality",
+          "Join Unacademy or VisionIAS foundation course (free or affordable)"
+        ],
+        "tips": [
+          "📋 Make a separate notebook for each GS subject. Revision notes are gold.",
+          "⏰ Aim for 4–6 hours of UPSC study daily alongside college. Quality > quantity.",
+          "🎯 Your optional subject choice matters hugely — pick based on interest AND scoring potential."
+        ]
+      },
+      {
+        "title": "UPSC Core Preparation (1–2 Years Dedicated)",
+        "desc": "Full-time preparation for UPSC Prelims and Mains. This is the most intense phase requiring complete focus.",
+        "exam": {
+          "name": "UPSC Civil Services Exam (3 Stages)",
+          "eligibility": "Any Graduate, Age 21–32 (Gen), 21–35 (OBC), 21–37 (SC/ST)",
+          "mode": "Offline (Pen & Paper)",
+          "frequency": "Annual (Notification: Feb, Prelims: June, Mains: Oct, Interview: Mar–May)"
+        },
+        "focus": [
+          "PRELIMS: GS Paper-I — History, Geography, Polity, Economy, Environment, Science & Tech, Current Affairs",
+          "PRELIMS: CSAT Paper-II — Reading Comprehension, Basic Math, Logical Reasoning (qualifying)",
+          "MAINS: Essay Paper — Write 2 essays on abstract and general topics (250 marks)",
+          "MAINS: GS Paper-I — Indian Heritage, Culture, World & Indian Geography, Post-Independence India",
+          "MAINS: GS Paper-II — Indian Constitution, Governance, International Relations",
+          "MAINS: GS Paper-III — Economy, Agriculture, Science & Tech, Environment, Security",
+          "MAINS: GS Paper-IV — Ethics, Integrity, Aptitude (Case Studies)",
+          "MAINS: Optional Subject × 2 Papers — Choose your best subject",
+          "Solve minimum 10 years of UPSC PYQs",
+          "Join a test series (Insights IAS, Forum IAS, VisionIAS)",
+          "Daily answer writing practice — UPSC is an exam of expression, not just knowledge"
+        ],
+        "tips": [
+          "📅 Follow a strict timetable. UPSC rewards consistency over brilliance.",
+          "✍️ Write one answer daily from UPSC Mains papers — answer writing is a skill that MUST be practiced.",
+          "📰 Read The Hindu editorial daily. Underline and make notes on current issues.",
+          "🔄 Revision is more important than new content after 6 months. Revise each subject at least 3 times."
+        ]
+      },
+      {
+        "title": "UPSC Prelims Examination",
+        "desc": "First hurdle. 2 papers — GS-I (200 marks) and CSAT (200 marks, qualifying only). Only GS-I marks count for cutoff.",
+        "exam": {
+          "name": "UPSC Prelims",
+          "eligibility": "Graduate, 21–32 yrs (Gen)",
+          "mode": "Offline MCQ",
+          "frequency": "June every year",
+          "marks": "GS-I: 200 | CSAT: 200 (qualifying at 66 marks)"
+        },
+        "focus": [
+          "Solve 3000+ MCQs from previous year papers and mock tests",
+          "Last 2 months: Only revision and mock tests — no new topics",
+          "Focus: Environment + Science & Tech (20+ questions every year)",
+          "Master map-based questions in Geography",
+          "Ancient Indian History: Vedic Period, Maurya, Gupta empires",
+          "Economy: Budget, GDP, RBI, SEBI, banking terms",
+          "Score target: 110+ out of 200 (cutoff is typically 90–110)"
+        ],
+        "tips": [
+          "⚠️ Negative marking: -0.67 per wrong answer. Attempt only when 60%+ confident.",
+          "🎯 Attempt 75–85 questions out of 100. Quality over quantity.",
+          "📊 Environment & Ecology is the highest-scoring area — give it 4 weeks dedicated study."
+        ]
+      },
+      {
+        "title": "UPSC Mains Examination",
+        "desc": "If you clear Prelims, Mains starts in October. 9 papers over 5 days. This is where real IAS preparation shows.",
+        "exam": {
+          "name": "UPSC Mains",
+          "eligibility": "Must clear Prelims",
+          "mode": "Offline Descriptive (Written)",
+          "frequency": "October every year",
+          "marks": "1750 + 2 Language Papers (qualifying)"
+        },
+        "focus": [
+          "Essay Paper: Practice writing 1000-word essays on abstract topics daily",
+          "GS-I to GS-IV: Revise all topics, focus on answer presentation, diagrams, flowcharts",
+          "GS-IV (Ethics): Practice case studies. Real-life examples score more than theory",
+          "Optional Subject: Study for 250+250 marks — this can make or break your rank",
+          "Daily target: 3–4 UPSC-type answers (250 words each), practice in real exam format",
+          "Learn to structure answers: Introduction → Body (with subheadings) → Conclusion"
+        ],
+        "tips": [
+          "📝 Join an answer writing program or group. Peer feedback is invaluable.",
+          "🏆 Toppers score high by CONNECTING topics — e.g., linking Economy to Ethics to Governance.",
+          "⏱️ In exam: spend exactly 7 minutes per 10-mark answer, 12 minutes per 15-mark answer."
+        ]
+      },
+      {
+        "title": "UPSC Personality Test (Interview)",
+        "desc": "Final stage. A 30–45 minute conversation with a board of senior civil servants. Tests your personality, not knowledge alone.",
+        "exam": {
+          "name": "UPSC Personality Test",
+          "eligibility": "Must clear Mains",
+          "mode": "In-Person at UPSC Bhavan, New Delhi",
+          "frequency": "March–May every year",
+          "marks": "275 marks"
+        },
+        "focus": [
+          "Know your Detailed Application Form (DAF) inside out — every detail will be questioned",
+          "Your home state, hometown, hobbies, graduation subject — all will be discussed",
+          "Prepare: Why IAS? Which cadre? What will you do as a collector?",
+          "Read about current events related to your state, optional subject, and hobbies",
+          "Practice mock interviews with coaches at Delhi — mandatory for rank improvement",
+          "Stay calm, honest, and balanced — the board tests how you handle pressure",
+          "Wear formal clothes. Show confidence, not arrogance."
+        ],
+        "tips": [
+          "🎙️ In mock interviews, say 'I don't know' honestly for unknown questions — don't bluff.",
+          "📖 Prepare a 2-minute self-introduction — the board always starts with 'Tell us about yourself.'",
+          "😊 Your body language and eye contact matter. The board is evaluating your potential as a public servant."
+        ]
+      },
+      {
+        "title": "Training at LBSNAA & IAS Career",
+        "desc": "Selected candidates undergo a 2-year Foundation Course at the Lal Bahadur Shastri National Academy of Administration (LBSNAA), Mussoorie, before being posted as IAS officers.",
+        "exam": null,
+        "focus": [
+          "Foundation Course at LBSNAA: Learning administration, law, Hindi, economics, physical training",
+          "District Training: Work with senior IAS officers in a district as a Probationary Officer",
+          "Department Allocations: State Cadre allocation based on rank and preference",
+          "First Posting: Typically as Sub-Collector or SDM (Sub-Divisional Magistrate)",
+          "Build career: IAS officers rise from SDM → Collector → Commissioner → Secretary level",
+          "Specialist roles: Some go into IFS (Foreign Service), Indian Revenue Service (IRS), etc."
+        ],
+        "tips": [
+          "🎉 Congratulations on making it here! 0.1% of applicants reach this stage.",
+          "🏛️ Your career as an IAS officer is just beginning — stay committed to public service.",
+          "📊 Starting salary: ₹56,100/month + DA + HRA + perks (Govt bungalow, vehicle, staff)"
+        ]
+      }
+    ]
+  },
+  "MBBS / Doctor": {
+    "icon": "⚕️",
+    "exam": "NEET UG",
+    "duration": "5–10 years",
+    "stages": [
+      {
+        "title": "Class 10 Foundation",
+        "desc": "The science foundation for a medical career begins here. Biology and Chemistry are your core subjects.",
+        "exam": null,
+        "focus": [
+          "Score 90%+ in Class 10 — especially in Science and Mathematics",
+          "Develop deep interest in Biology: human body, diseases, cells",
+          "Read NCERT Science (Class 9 & 10) thoroughly — forms NEET foundation",
+          "Visit a hospital or clinic to shadow a doctor — builds motivation",
+          "Join any biology olympiad or science quiz"
+        ],
+        "tips": [
+          "🔬 Start a biology journal — draw and label organs, cells. Visual memory helps in NEET.",
+          "📚 The Biology NCERT you read now will directly appear in NEET questions later."
+        ]
+      },
+      {
+        "title": "Class 11 & 12 (BiPC) + NEET Preparation",
+        "desc": "Take Biology, Physics, Chemistry in Class 11. This is THE most critical phase. NEET preparation runs parallel to 12th.",
+        "exam": {
+          "name": "JEE Mains (if B.Tech is backup)",
+          "eligibility": "Min 50% in PCB for NEET",
+          "mode": "Offline Pen & Paper",
+          "frequency": "Annual — May (NEET UG)"
+        },
+        "focus": [
+          "BIOLOGY (360 marks): Read NCERT Biology word-by-word. Every line can be a NEET question",
+          "CHEMISTRY (180 marks): Physical Chemistry (numericals), Inorganic (NCERT), Organic (mechanisms)",
+          "PHYSICS (180 marks): Numericals focus. Master: Mechanics, Electricity, Modern Physics",
+          "Solve previous 10 years NEET papers",
+          "Join coaching (Allen/Aakash/PW/Vedantu) or self-study with online content",
+          "Give weekly mock tests — speed + accuracy is everything in NEET",
+          "Target score: 600+ for government MBBS | 550+ for private | 680+ for AIIMS"
+        ],
+        "tips": [
+          "📖 NCERT Biology is the Bible. 80% of Biology questions in NEET come directly from NCERT.",
+          "⏱️ NEET is 3 hrs 20 min for 180 questions — practice timing with mock tests every week.",
+          "🧪 For Chemistry: Inorganic (Class 12 NCERT) + Organic reactions are most important."
+        ]
+      },
+      {
+        "title": "NEET UG Exam",
+        "desc": "The gateway to MBBS. A single national exam for all government and private medical colleges in India.",
+        "exam": {
+          "name": "NEET UG",
+          "eligibility": "Class 12 PCB, minimum 50% marks (40% for SC/ST)",
+          "mode": "Offline (OMR Sheet)",
+          "frequency": "Annual — May",
+          "marks": "720 total | Biology: 360 | Physics: 180 | Chemistry: 180 | Negative: -1 per wrong"
+        },
+        "focus": [
+          "Final 3 months: Only revision and mock tests",
+          "Attempt NEET official mocks on NTA website weekly",
+          "Last 30 days: Chapter-wise revision of weak areas",
+          "Exam day strategy: Biology first (highest marks) → Chemistry → Physics",
+          "Counselling: After results, apply via MCC (Medical Counselling Committee) for seat allotment"
+        ],
+        "tips": [
+          "🏆 Top Government Medical Colleges: AIIMS Delhi (680+), JIPMER, AFMC, BHU, VMC",
+          "📊 Cut-off for Government Quota: ~600 (General) | ~500 (OBC) | ~450 (SC/ST)",
+          "💡 Dropped a year? Use it wisely — 1 drop year can make the difference between govt and private."
+        ]
+      },
+      {
+        "title": "MBBS Degree (4.5 Years + 1 Year Internship)",
+        "desc": "The real medical training begins. 4.5 years of university study followed by mandatory 1-year rotating internship.",
+        "exam": {
+          "name": "Professional University Exams",
+          "eligibility": "Enrolled MBBS Student",
+          "mode": "Written + Practical (Viva)",
+          "frequency": "Each semester/year"
+        },
+        "focus": [
+          "Phase 1 (1st year): Anatomy, Physiology, Biochemistry",
+          "Phase 2 (2nd year): Pathology, Microbiology, Pharmacology, Forensic Medicine",
+          "Phase 3 Part 1 (3rd year): Ophthalmology, ENT, Community Medicine (PSM)",
+          "Phase 3 Part 2 (Final MBBS): Surgery, Medicine, Obstetrics & Gynaecology, Paediatrics",
+          "Must pass each professional exam — failing means year back",
+          "1-Year Rotating Internship: Work in Medicine, Surgery, OBG, Paediatrics, Orthopaedics wards",
+          "Register with Medical Council of India (MCI) / NMC after internship"
+        ],
+        "tips": [
+          "🏥 Clinical rotations are your most valuable learning. Be present in wards, not just lectures.",
+          "💊 Pharmacology — memorize drug classes and uses systematically. Flash cards work well.",
+          "📱 Apps: Amboss, UpToDate — used by doctors worldwide for clinical reference."
+        ]
+      },
+      {
+        "title": "NEET PG + MD/MS Specialization (Optional but Recommended)",
+        "desc": "After MBBS internship, most doctors appear for NEET PG to enter MD/MS specialization programs (3 years).",
+        "exam": {
+          "name": "NEET PG (NExT from 2025)",
+          "eligibility": "MBBS + Internship completion",
+          "mode": "CBT Online",
+          "frequency": "Annual",
+          "marks": "800 MCQs | 200 marks | All clinical subjects"
+        },
+        "focus": [
+          "NEET PG covers all MBBS subjects — must revise everything",
+          "Popular specializations: General Surgery, Internal Medicine, Orthopaedics, Radiology, Dermatology, Psychiatry",
+          "Super-specialization (DM/MCh): After MD — another 3 years for Cardiology, Neurology, Oncology, etc.",
+          "DNB (Diplomate of National Board): Hospital-based alternative to MD/MS",
+          "Many doctors also pursue USMLE for USA or PLAB for UK practice"
+        ],
+        "tips": [
+          "🎯 Start NEET PG preparation 6 months into internship.",
+          "🏆 Top specializations by demand: Radiology, Dermatology, Orthopaedics, Anaesthesia.",
+          "💰 An MBBS + MD Specialist earns ₹1–5L/month at government hospitals + more in private practice."
+        ]
+      }
+    ]
+  },
+  "Software Engineer": {
+    "icon": "💻",
+    "exam": "JEE Mains / State CET",
+    "duration": "4–6 years",
+    "stages": [
+      {
+        "title": "Class 10 — Logic Building",
+        "desc": "The foundation of programming is logical thinking. Mathematics and problem-solving skills are built here.",
+        "exam": null,
+        "focus": [
+          "Score 90%+ in Mathematics — algebra, geometry, and statistics are programming foundations",
+          "Learn basic computer operations and introduction to programming logic",
+          "Download and try Scratch (free visual programming tool by MIT) — create simple games",
+          "Try basic Python tutorials on YouTube (free) — just get curious",
+          "Participate in math olympiads (AMO, IMO state level) — sharpens logical thinking"
+        ],
+        "tips": [
+          "🧩 Programming is just problem solving + instructions. You already do it daily — just learn the syntax.",
+          "🎮 Want to learn coding? Make a game. Motivation + learning = faster progress."
+        ]
+      },
+      {
+        "title": "Class 11–12 (MPC) + JEE Preparation",
+        "desc": "Math, Physics, Chemistry for JEE. Also the right time to start learning actual programming as a hobby.",
+        "exam": {
+          "name": "JEE Mains",
+          "eligibility": "Class 12 with PCM, 75%+ marks",
+          "mode": "CBT (Online)",
+          "frequency": "Jan & April — 2 sessions/year"
+        },
+        "focus": [
+          "JEE Mains — for NITs, IIITs, and State Engineering Colleges",
+          "JEE Advanced — for IITs (top 2.5 lakh from JEE Mains qualify)",
+          "Alongside JEE: Learn Python basics (print, loops, lists, functions) using YouTube/FreeCodeCamp",
+          "Mathematics: Calculus, Matrices, Probability — these form CS algorithms base",
+          "Join coaching or self-study via Physics Wallah / Allen / Unacademy"
+        ],
+        "tips": [
+          "💡 Even if JEE rank isn't top 1000 — you can become a great software engineer from any NIT or state college.",
+          "🐍 Python is the best first language. Install it, write 'Hello World', and go from there.",
+          "📱 Alternative path: BCA or BSc CS are valid routes to software engineering too."
+        ]
+      },
+      {
+        "title": "B.Tech CS/IT (4 Years) — Core Phase",
+        "desc": "The most crucial 4 years. What you build here determines your career. Coding, projects, and internships matter more than marks.",
+        "exam": {
+          "name": "Semester University Exams",
+          "eligibility": "B.Tech Enrolled Student",
+          "mode": "Written + Practical",
+          "frequency": "Every 6 months"
+        },
+        "focus": [
+          "SEMESTER 1–2: C/C++ programming, Mathematics (Discrete Math, Linear Algebra), Computer Organization",
+          "SEMESTER 3–4: Data Structures (Arrays, Linked Lists, Trees, Graphs), OOP (Java/Python), DBMS",
+          "SEMESTER 5–6: Algorithms, Operating Systems, Computer Networks, Software Engineering",
+          "SEMESTER 7–8: Electives (AI/ML, Web Dev, Cloud, Cybersecurity), Major Project",
+          "PARALLEL: Do DSA daily on LeetCode (aim for 300+ problems by graduation)",
+          "PARALLEL: Build real projects — at least 3–4 full-stack or domain-specific projects on GitHub",
+          "INTERNSHIPS: Apply every semester. Even unpaid internships give experience",
+          "OPEN SOURCE: Contribute to GitHub open-source projects in 3rd/4th year"
+        ],
+        "tips": [
+          "📌 DSA is the most important skill for getting placed in top companies. Start LeetCode from 1st year.",
+          "🚀 Build projects that SOLVE REAL PROBLEMS — not just tutorial clones. Recruiters want to see creativity.",
+          "💼 1 good internship = 10 certificates. Apply on LinkedIn, Internshala, AngelList from 2nd year.",
+          "📊 CGPA matters only for your first job. 7.5+ is generally safe. Focus more on skills."
+        ]
+      },
+      {
+        "title": "Specialization & Portfolio Building",
+        "desc": "Choose your specialization track (Web Dev, Data Science, AI/ML, Mobile Apps, DevOps, Cybersecurity) and build a professional portfolio.",
+        "exam": null,
+        "focus": [
+          "FULL STACK WEB: HTML, CSS, JavaScript, React, Node.js, MongoDB, REST APIs",
+          "DATA SCIENCE / AI: Python, NumPy, Pandas, Scikit-learn, TensorFlow, SQL",
+          "MOBILE (Android): Kotlin, Android Studio, Firebase, Google Play",
+          "CLOUD: AWS / Azure / GCP certifications (AWS Cloud Practitioner is a great start)",
+          "CYBERSECURITY: CompTIA Security+, Ethical Hacking (CEH), CTF competitions",
+          "Build a personal portfolio website showcasing 3–5 projects",
+          "Create a strong LinkedIn profile with projects, skills, and recommendations",
+          "Maintain an active GitHub with consistent commits"
+        ],
+        "tips": [
+          "🌐 Deploy everything. A project that runs live > a project in your laptop.",
+          "📝 Write a blog or LinkedIn post about what you build. Visibility = Opportunities.",
+          "🏆 Participate in hackathons (Unstop, DevFolio) — prizes + networking + portfolio boost."
+        ]
+      },
+      {
+        "title": "Placements & Job Hunt",
+        "desc": "Campus placements or off-campus job hunting. The final step to getting your first software engineering role.",
+        "exam": {
+          "name": "Company Coding Rounds + Interviews",
+          "eligibility": "Final Year Student or Graduate",
+          "mode": "Online/Offline",
+          "frequency": "July–December (Campus) / Year-round (Off-campus)"
+        },
+        "focus": [
+          "DSA Round: Solve 2–3 LeetCode problems under time pressure (Array, String, DP, Graph)",
+          "System Design (for senior roles): How would you design WhatsApp? Design URL Shortener?",
+          "Core CS: OS (Process, Thread, Deadlock), DBMS (SQL, Normalization), Networks (TCP/IP, HTTP)",
+          "HR Round: 'Tell me about yourself', 'Why this company?', 'Where do you see yourself in 5 years?'",
+          "Apply to: Amazon, Microsoft, Google, Flipkart, Swiggy, Zomato, Razorpay, PhonePe, TCS, Infosys",
+          "Off-campus: LinkedIn Easy Apply, Company career pages, Naukri, AngelList (startups)"
+        ],
+        "tips": [
+          "💰 Fresher salaries: Tier-1 companies ₹12–50 LPA, Mid-tier ₹5–12 LPA, Mass recruiters ₹3–5 LPA.",
+          "🎯 Quality of preparation > number of applications. Master DSA well before applying to top companies.",
+          "📧 Cold email HRs on LinkedIn after applying. A personal message increases response rate by 5x."
+        ]
+      }
+    ]
+  },
+  "Chartered Accountant": {
+    "icon": "📊",
+    "exam": "CA Foundation (ICAI)",
+    "duration": "5–6 years",
+    "stages": [
+      {
+        "title": "Class 10 — Commerce Foundation",
+        "desc": "Interest in numbers, finance, and accounts begins here.",
+        "exam": null,
+        "focus": [
+          "Score well in Mathematics and Social Science (Economics)",
+          "Understand basic concepts of income, savings, taxes — read a newspaper's business section",
+          "Visit a local CA office or bank to understand financial work",
+          "Build mental math skills — calculation speed matters in CA exams"
+        ],
+        "tips": [
+          "📊 CAs are respected and well-paid. But it's one of India's toughest professional exams — 4–6% pass rate in CA Final.",
+          "🔢 Fall in love with numbers. If you hate calculations, CA might not be for you."
+        ]
+      },
+      {
+        "title": "Class 11–12 (Commerce Stream)",
+        "desc": "Take Commerce (Accountancy, Economics, Business Studies, Math) in Class 11. Begin CA Foundation registration.",
+        "exam": {
+          "name": "CA Foundation",
+          "eligibility": "Class 12 Appeared/Passed",
+          "mode": "Offline Written (Paper Based)",
+          "frequency": "May & November each year"
+        },
+        "focus": [
+          "Score 60%+ in Class 12 boards",
+          "Register with ICAI for CA Foundation immediately after Class 12 exams",
+          "Study: Principles & Practice of Accounting (Paper 1 — most important)",
+          "Business Laws & Business Correspondence (Paper 2)",
+          "Business Mathematics, Statistics (Paper 3 — MCQ, no negative marking)",
+          "Business Economics (Paper 4 — MCQ, no negative marking)",
+          "Target: 50% aggregate + 40% in each paper to pass"
+        ],
+        "tips": [
+          "📚 ICAI's official study material is the most important resource. Nothing else is needed for Foundation.",
+          "🎯 CA Foundation pass rate is ~35%. Focus on Accounting Paper 1 — it carries the most weight."
+        ]
+      },
+      {
+        "title": "CA Intermediate (Both Groups)",
+        "desc": "Second level. 6 papers across 2 groups. Must complete Group 1 before starting articleship.",
+        "exam": {
+          "name": "CA Intermediate",
+          "eligibility": "CA Foundation Passed",
+          "mode": "Offline Written",
+          "frequency": "May & November",
+          "marks": "100 per paper | Pass: 40% each, 50% aggregate"
+        },
+        "focus": [
+          "GROUP 1 — Paper 1: Advanced Accounting (Ind AS basics, Partnership, Company Accounts)",
+          "GROUP 1 — Paper 2: Corporate & Other Laws (Companies Act 2013)",
+          "GROUP 1 — Paper 3: Cost & Management Accounting",
+          "GROUP 1 — Paper 4: Taxation (GST + Income Tax) — MOST scoring paper!",
+          "GROUP 2 — Paper 5: Advanced Accounting (Financial Reporting)",
+          "GROUP 2 — Paper 6: Auditing & Assurance",
+          "GROUP 2 — Paper 7: Enterprise Information Systems + Strategic Management",
+          "GROUP 2 — Paper 8: Financial Management + Economics for Finance",
+          "ALSO: Register for 3-year Articleship under a practicing CA after clearing Group 1"
+        ],
+        "tips": [
+          "⚠️ Taxation paper (Paper 4) is the most scoring — invest 60% of your time here.",
+          "💡 Many students take 2–3 attempts. Don't give up — persistence is the CA trait.",
+          "📅 ICAI PYQs are gold — solve last 5 years papers before every attempt."
+        ]
+      },
+      {
+        "title": "3-Year Articleship Training",
+        "desc": "Mandatory practical training under a practicing Chartered Accountant. The real-world experience that shapes you as a CA.",
+        "exam": null,
+        "focus": [
+          "Work in statutory audit — verify company financial statements under CA supervision",
+          "Tax audit: Verify tax computations for businesses under section 44AB",
+          "Internal audit: Review internal controls of companies",
+          "GST filing, ITR filing, ROC compliance — you'll handle all of these",
+          "Join a Big 4 firm articleship (Deloitte, EY, KPMG, PwC) if possible — best career boost",
+          "Mid-term: Attempt CA Intermediate remaining group if pending",
+          "Simultaneously prepare for CA Final exams in the last year of articleship"
+        ],
+        "tips": [
+          "🏢 Big 4 articleship (Deloitte, EY, PwC, KPMG) = premium placement after CA Final.",
+          "📋 Maintain a detailed work diary — ICAI may verify your training during CA Final registration.",
+          "💡 Articleship salary: ₹2,000–₹15,000/month. It's training, not employment — skills matter more."
+        ]
+      },
+      {
+        "title": "CA Final Examination",
+        "desc": "The ultimate challenge. 8 papers across 2 groups. Only 4–6% pass on the first attempt. This is where legends are made.",
+        "exam": {
+          "name": "CA Final",
+          "eligibility": "CA Intermediate Passed + Articleship (min 2.5 years)",
+          "mode": "Offline Written",
+          "frequency": "May & November",
+          "marks": "100 per paper | Pass: 40% each, 50% aggregate"
+        },
+        "focus": [
+          "GROUP 1 — FR (Financial Reporting): Ind AS, IFRS, Consolidated FS, NBFC Accounts",
+          "GROUP 1 — SFM (Strategic Financial Management): Derivatives, Portfolio, Forex, Mergers",
+          "GROUP 1 — Tax (Advanced): Income Tax (complex cases), International Tax, Transfer Pricing",
+          "GROUP 1 — Law (Corporate & Economic): SEBI, RBI, Insolvency Law, Company Law",
+          "GROUP 2 — Audit: Risk-based Audit, IT Audit, Standards on Auditing",
+          "GROUP 2 — Elective (Choose 1): Global Financial Reporting / Risk Management / Financial Services",
+          "GROUP 2 — Direct & Indirect Tax (Integrated): GST + Customs + Income Tax",
+          "Solve ICAI Study Material, ICAI RTP (Revision Test Papers), and PYQs for ALL papers"
+        ],
+        "tips": [
+          "⚠️ CA Final pass rate is only 4–8%. Do NOT underestimate any paper.",
+          "🎯 SFM and FR are the hardest — start preparation 1 year before the attempt.",
+          "✅ Most successful CAs attempt Final 2–3 times. Persistence + Smart Study = Success."
+        ]
+      },
+      {
+        "title": "CA Qualification & Professional Career",
+        "desc": "You are now a Chartered Accountant! One of India's most respected professional qualifications.",
+        "exam": null,
+        "focus": [
+          "Join Big 4 (Deloitte, EY, KPMG, PwC) as an Associate — starting salary ₹7–12 LPA",
+          "Mid-size CA firms offer ₹4–8 LPA with faster partner track",
+          "Corporate roles: CFO (Chief Financial Officer) track at companies",
+          "Government: CAG (Comptroller & Auditor General), RBI, SEBI, IRDAI recruitment",
+          "Practice: Start your own CA firm — audit businesses, file taxes, advise clients",
+          "Specializations: DISA (IT Audit), ISA, CFA, ACCA (for international opportunities)"
+        ],
+        "tips": [
+          "🏆 Average Big 4 fresher CA salary: ₹7–12 LPA. With 5 years: ₹20–40+ LPA.",
+          "🌍 With ACCA (UK) alongside CA, you can work globally — London, Singapore, Dubai.",
+          "💼 Entrepreneurship: Starting a CA firm is the most common path — build your own practice."
+        ]
+      }
+    ]
+  },
+  "Bank PO / Clerk": {
+    "icon": "🏦",
+    "exam": "IBPS PO / SBI PO",
+    "duration": "2–4 years",
+    "stages": [
+      {
+        "title": "Class 10 Foundation",
+        "desc": "Arithmetic speed and reasoning skills start here.",
+        "exam": null,
+        "focus": [
+          "Score well in Math",
+          "Practice mental calculations",
+          "Read newspapers to understand banking concepts"
+        ],
+        "tips": [
+          "🔢 Bank exams are 60% Math + Reasoning. Build calculation speed now."
+        ]
+      },
+      {
+        "title": "Intermediate — Any Stream",
+        "desc": "Commerce preferred but any stream works for bank exams.",
+        "exam": null,
+        "focus": [
+          "Score 60%+ in 12th boards",
+          "Start basic aptitude practice",
+          "Learn basics of Indian banking system"
+        ],
+        "tips": [
+          "✅ Bank PO requires graduation, but start prep now in 12th itself."
+        ]
+      },
+      {
+        "title": "Graduation (Any Stream)",
+        "desc": "Complete any Bachelor's degree. Start serious bank exam preparation in final year.",
+        "exam": {
+          "name": "SBI PO Prelims",
+          "eligibility": "Graduate (Any Stream), 20–30 years",
+          "mode": "CBT Online",
+          "frequency": "Annual"
+        },
+        "focus": [
+          "Quantitative Aptitude: Arithmetic, DI, Number System",
+          "Reasoning: Puzzles, Syllogism, Coding-Decoding, Blood Relations",
+          "English: Reading Comprehension, Error Correction, Fill in the Blanks",
+          "General Awareness: Banking Awareness, Current Affairs, Static GK",
+          "Computer Knowledge: Basic hardware, software, internet"
+        ],
+        "tips": [
+          "📊 Practice 2 mock tests per week from Day 1.",
+          "⚡ Speed is everything — bank exams have sectional cutoffs AND time limits."
+        ]
+      },
+      {
+        "title": "Bank PO Interview & Appointment",
+        "desc": "Clear Mains + GD/Interview to get final appointment as Bank PO.",
+        "exam": {
+          "name": "SBI PO / IBPS PO Mains + Interview",
+          "eligibility": "Clear Prelims",
+          "mode": "CBT + GD + Personal Interview",
+          "frequency": "Annual"
+        },
+        "focus": [
+          "Mains: Descriptive English writing",
+          "GD: Current banking topics, NPAs, digital banking",
+          "Interview: Banking knowledge, current affairs, confidence"
+        ],
+        "tips": [
+          "💼 Starting salary: SBI PO ₹52,000–₹67,000/month + DA + HRA + perks.",
+          "🏦 Career: PO → Manager → Chief Manager → AGM → DGM → GM → ED → MD"
+        ]
+      }
+    ]
+  },
+  "Defence Services": {
+    "icon": "⚔️",
+    "exam": "NDA / CDS",
+    "duration": "3–6 years",
+    "stages": [
+      {
+        "title": "Class 10",
+        "desc": "Physical fitness and academics both matter from here.",
+        "exam": null,
+        "focus": [
+          "Score 70%+ in all subjects",
+          "Develop physical fitness: 5km run, push-ups, pull-ups daily",
+          "Participate in NCC (National Cadet Corps) — big advantage in SSB",
+          "Leadership activities in school"
+        ],
+        "tips": [
+          "🏃 Physical fitness is tested in SSB. Start running and strength training now."
+        ]
+      },
+      {
+        "title": "Class 11–12 (PCM for NDA)",
+        "desc": "Science (PCM) required for Army/Air Force/Navy via NDA. Other streams for CDS after graduation.",
+        "exam": {
+          "name": "NDA Exam (UPSC)",
+          "eligibility": "Class 12 PCM for Army/AF/Navy | Any stream for Army after 12th",
+          "mode": "Offline MCQ + SSB",
+          "frequency": "2x per year (April & September)"
+        },
+        "focus": [
+          "NDA Written: Math (300 marks) + General Ability Test (600 marks)",
+          "Math: Matrices, Calculus, Statistics, Trigonometry, Vector Algebra",
+          "GAT: English, GK, Physics, Chemistry, History, Geography, Current Affairs",
+          "SSB (Services Selection Board): 5-day psychological + physical + interview test"
+        ],
+        "tips": [
+          "🎯 SSB is more about personality than knowledge. Leadership, confidence, and teamwork are tested.",
+          "🏆 Crack NDA and join IMA (Indian Military Academy) or NDA Khadakwasla — one of India's best institutions."
+        ]
+      },
+      {
+        "title": "Training & Commission as Officer",
+        "desc": "Selected candidates undergo rigorous training at respective academies before being commissioned as officers.",
+        "exam": null,
+        "focus": [
+          "IMA Dehradun: Army Officers (1.5 years training)",
+          "AFA Hyderabad: Air Force Officers (training 1.5–3 years)",
+          "INA Ezhimala: Navy Officers (4 years training)",
+          "After training: Commissioned as Lieutenant in Army / Flying Officer in AF / Sub-Lieutenant in Navy"
+        ],
+        "tips": [
+          "⚔️ Starting pay: Lieutenant ₹56,100/month + MSP ₹15,500 + perks (accommodation, ration, medical, canteen).",
+          "🌍 Best career for travel, leadership, and national pride."
+        ]
+      }
+    ]
+  },
+  "Teacher / Professor": {
+    "icon": "🎓",
+    "exam": "UGC NET / TET",
+    "duration": "4–8 years",
+    "stages": [
+      {
+        "title": "Class 10–12",
+        "desc": "Choose your favorite subject — that's what you'll teach for life.",
+        "exam": null,
+        "focus": [
+          "Score well in your chosen subject",
+          "Develop communication skills — public speaking, explanation ability",
+          "Read beyond textbooks to build subject depth"
+        ],
+        "tips": [
+          "🎤 Great teachers are great communicators. Join drama club or debate team."
+        ]
+      },
+      {
+        "title": "Graduation + B.Ed (for School Teacher)",
+        "desc": "Complete degree + B.Ed for school teaching, or postgraduate for college/university level.",
+        "exam": {
+          "name": "B.Ed Entrance / State CET",
+          "eligibility": "Graduate in relevant subject",
+          "mode": "Written + Interview",
+          "frequency": "Annual"
+        },
+        "focus": [
+          "Graduation in your subject (English, Math, Science, History, etc.)",
+          "B.Ed (Bachelor of Education) — 2-year program teaching pedagogy and practice teaching",
+          "CTET / State TET: Mandatory exam for government school teachers"
+        ],
+        "tips": [
+          "📚 CTET is required for KVS, NVS, and all Central Government school teachers.",
+          "🏫 State TET is required for respective state government school teachers."
+        ]
+      },
+      {
+        "title": "Post-Graduation + UGC NET (for College Professor)",
+        "desc": "Complete Master's degree and clear UGC NET to become a college/university lecturer.",
+        "exam": {
+          "name": "UGC NET",
+          "eligibility": "Postgraduate (55% marks), No age limit",
+          "mode": "CBT Online",
+          "frequency": "2x per year (June & December)"
+        },
+        "focus": [
+          "Paper 1 (all subjects): Teaching Aptitude, Research, Communication, ICT, Logical Reasoning",
+          "Paper 2: Your chosen subject (100 MCQs from PG syllabus)",
+          "UGC NET Score: JRF (Junior Research Fellowship) for PhD + teaching | NET for Assistant Professor"
+        ],
+        "tips": [
+          "🏛️ Assistant Professor starting salary: ₹57,700/month (7th Pay Commission) + DA + perks.",
+          "📖 UGC NET JRF gives scholarship of ₹37,000/month to do PhD — best path for research + teaching."
+        ]
+      }
+    ]
+  },
+  "IPS / Police Services": {
+    "icon": "👮",
+    "exam": "UPSC CSE",
+    "duration": "5–8 years",
+    "stages": [
+      {
+        "title": "Class 10 & 12 — Build Base",
+        "desc": "IPS is through UPSC CSE — same as IAS. Start foundation early.",
+        "exam": null,
+        "focus": [
+          "Academic excellence",
+          "Physical fitness — running, sports, NCC",
+          "Leadership and community service activities"
+        ],
+        "tips": [
+          "🏃 IPS Physical Standard: Height 165cm (Men), 150cm (Women). Start fitness from school."
+        ]
+      },
+      {
+        "title": "Graduation + UPSC Preparation",
+        "desc": "Any graduate can appear for UPSC CSE. IPS is allocated based on rank and preference.",
+        "exam": {
+          "name": "UPSC CSE (Same as IAS)",
+          "eligibility": "Any Graduate, 21–32 yrs",
+          "mode": "Offline",
+          "frequency": "Annual"
+        },
+        "focus": [
+          "Prepare for UPSC CSE exactly like IAS — same syllabus, same exam",
+          "IPS allocation: After written result, preference is asked. IPS gets top 100–200 ranks typically",
+          "Also apply for State Police Service via State PSC exams (easier and faster route)"
+        ],
+        "tips": [
+          "👮 State PSC → State Police Service → IPS is an alternative route through promotion."
+        ]
+      },
+      {
+        "title": "Sardar Vallabhbhai Patel National Police Academy (SVPNPA)",
+        "desc": "Selected IPS probationers train at SVPNPA, Hyderabad for 2 years before field posting.",
+        "exam": null,
+        "focus": [
+          "Training: Law, Investigation, Forensics, Physical Training, Leadership",
+          "First posting: Assistant Superintendent of Police (ASP) / Deputy SP",
+          "Career: ASP → SP → DIG → IG → ADG → DGP"
+        ],
+        "tips": [
+          "👮 IPS starting pay: ₹56,100/month + MSP + bungalow + vehicle + staff.",
+          "🔍 Most IPS officers work in CBI, IB, RAW, state police forces — highly varied career."
+        ]
+      }
+    ]
+  }
+};
+
+    // =========================================================
+    // STAGE DETECTION — map edu level to completed stages
+    // =========================================================
+    const EDU_STAGE_MAP = {
+      "class10": 1,
+      "class11-12": 2,
+      "graduation": 3,
+      "grad-complete": 4,
+      "pg": 5
+    };
+
+    // =========================================================
+    // COMPLETION TRACKING WITH SUPABASE
+    // =========================================================
+    let userCompletions = {};
+    let currentProfile = {};
+
+    async function fetchUserData() {
+      const authData = await requireAuth();
+      if (!authData) return;
+      const user = authData.user;
+      
+      document.getElementById('sUsername').textContent = user.user_metadata?.full_name || user.email?.split('@')[0] || 'User';
+
+      // Caching logic
+      const cacheKey = `careez_roadmap_${user.id}`;
+      const cached = sessionStorage.getItem(cacheKey);
+
+      let profile, progress;
+
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        profile = parsed.profile;
+        progress = parsed.progress;
+      } else {
+        // Parallel Fetch
+        const [profRes, progRes] = await Promise.all([
+          supabase.from('Profile').select('*').eq('id', user.id).single(),
+          supabase.from('Roadmap').select('career_id, stage_id').eq('user_id', user.id)
+        ]);
+
+        if (profRes.error || !profRes.data) {
+          // Fallback to localProfile if Supabase fetch failed (common in pending email state)
+          const localProfileRaw = localStorage.getItem('careez_profile');
+          if (localProfileRaw) {
+            try { profile = JSON.parse(localProfileRaw); } catch(_) {}
+          }
+          
+          if (!profile) {
+            console.warn("Profile not found in DB or LocalStorage, redirecting to setup.");
+            window.location.href = 'student_details.html';
+            return;
+          }
+          progress = []; // No progress records if we can't fetch them
+        } else {
+          profile = profRes.data;
+          progress = progRes.data;
+        }
+
+        // Save to cache
+        sessionStorage.setItem(cacheKey, JSON.stringify({ profile, progress, ts: Date.now() }));
+      }
+
+      currentProfile = profile;
+      currentProfile.eduLevel = profile.edu_level;
+
+      userCompletions = {};
+      if (progress) {
+        progress.forEach(p => {
+          userCompletions[`${p.career_id}_${p.stage_id}`] = true;
+        });
+      }
+
+      await renderRoadmap();
+    }
+
+    // Helper to invalidate cache
+    function invalidateCache() {
+      requireAuth().then(authData => {
+        if(authData && authData.user) {
+          sessionStorage.removeItem(`careez_roadmap_${authData.user.id}`);
+          sessionStorage.removeItem(`careez_dash_${authData.user.id}`);
+        }
+      });
+    }
+
+    window.toggleCompletion = async function (career, idx, btn) {
+      const authData = await requireAuth();
+      if (!authData) return;
+      const user = authData.user;
+      const key = career + '_' + idx;
+      const isDone = !!userCompletions[key];
+
+      btn.disabled = true;
+
+      if (isDone) {
+        // Delete from Supabase
+        const { error } = await supabase.from('Roadmap').delete().match({ user_id: user.id, career_id: career, stage_id: idx.toString() });
+        if (!error) {
+          delete userCompletions[key];
+          invalidateCache();
+          btn.className = 'mark-btn undone'; btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Mark as Completed';
+        }
+      } else {
+        // Insert to Supabase
+        const { error } = await supabase.from('Roadmap').insert({ user_id: user.id, career_id: career, stage_id: idx.toString() });
+        if (!error) {
+          userCompletions[key] = true;
+          invalidateCache();
+          btn.className = 'mark-btn'; btn.innerHTML = '<i class="fa-solid fa-check"></i> Marked Complete!';
+        }
+      }
+
+      btn.disabled = false;
+      updateProgressUI(career);
+    }
+
+    // =========================================================
+    // RENDER ROADMAP
+    // =========================================================
+    async function renderRoadmap() {
+      const career = currentProfile.career || 'IAS / Civil Services';
+      const data = CAREER_DATA[career];
+      if (!data) { document.getElementById('timeline').innerHTML = '<p style="color:var(--muted)">Career data not found. <a href="student_details.html" style="color:var(--accent)">Update your profile</a>.</p>'; return; }
+
+      // Content/Theme Updates
+      document.getElementById('sCareer').textContent = career;
+      document.getElementById('mainCareerTitle').textContent = data.icon + '  ' + career + ' Roadmap';
+      document.title = career + ' Roadmap – CareeZ';
+
+      // mapping
+      const careerDbMap = {
+        "IAS / Civil Services": "UPSC",
+        "MBBS / Doctor": "NEET",
+        "Software Engineer": "JEE",
+        "Chartered Accountant": "CA",
+        "Bank PO / Clerk": "BANKING",
+        "Defence Services": "DEFENCE",
+        "Teacher / Professor": "UGCNET",
+        "IPS / Police Services": "UPSC"
+      };
+      
+      const dbCategory = careerDbMap[career] || career;
+      
+      // Fetch dynamic links
+      let resourcesData = [];
+      try {
+        const { data: records, error } = await supabase
+          .from('Resources')
+          .select('*')
+          .eq('category', dbCategory);
+        
+        if (!error && records) {
+          resourcesData = records.filter(r => r.link_url && r.link_url !== 'INVALID');
+        }
+      } catch (err) {
+        console.error('Error fetching dynamic resources', err);
+      }
+      
+      // Group by tag for quick access
+      const resourceByTag = {
+        'books': resourcesData.filter(r => r.tag === 'books' || r.tag === 'book'),
+        'video': resourcesData.filter(r => r.tag === 'video' || r.tag === 'videos' || r.type === 'yt'),
+        'pyq': resourcesData.filter(r => r.tag === 'pyq' || r.tag === 'pyqs'),
+        'website': resourcesData.filter(r => r.tag === 'website' || r.tag === 'websites' || r.type === 'web')
+      };
+
+      // Ensure each call gets unique links (shuffle tracking)
+      const tagIndices = { 'books': 0, 'video': 0, 'pyq': 0, 'website': 0 };
+
+      const eduStage = EDU_STAGE_MAP[currentProfile.eduLevel] || 0;
+      const timeline = document.getElementById('timeline');
+      timeline.innerHTML = '';
+
+      data.stages.forEach((stage, i) => {
+        const manuallyDone = !!userCompletions[career + '_' + i];
+        const autoDone = i < eduStage;
+        const done = autoDone || manuallyDone;
+        const active = !done && i === eduStage;
+        const locked = !done && !active;
+
+        const status = done ? 'done' : active ? 'active' : 'locked';
+        const dotClass = done ? 'dot-done' : active ? 'dot-active' : 'dot-locked';
+        const numClass = done ? 'num-done' : active ? 'num-active' : 'num-locked';
+        const badgeClass = done ? 'badge-done' : active ? 'badge-active' : 'badge-locked';
+        const badgeText = done ? '✓ Completed' : active ? '→ In Progress' : 'Upcoming';
+        const dotIcon = done ? '<i class="fa-solid fa-check" style="font-size:.7rem"></i>' : '';
+
+        // Determine target tag based on Step #
+        // Step 1 -> books, 2 -> video, 3 -> pyq, 4 -> website
+        const tagSequence = ['books', 'video', 'pyq', 'website'];
+        const tagToUse = tagSequence[i % 4];
+        
+        // Grab top 3 resources from Supabase for this tag
+        let matchedResources = [];
+        const available = resourceByTag[tagToUse] || [];
+        for (let j = 0; j < 3; j++) {
+            if (tagIndices[tagToUse] < available.length) {
+                matchedResources.push(available[tagIndices[tagToUse]]);
+                tagIndices[tagToUse]++;
+            } else {
+                // cycle back if exhausted
+                if (available.length > 0) {
+                    matchedResources.push(available[j % available.length]);
+                }
+            }
+        }
+
+        // Generate dynamic HTML from supabase resources
+        const iconMap = { 'books': 'fa-book', 'video': 'fa-youtube', 'pyq': 'fa-file-pdf', 'website': 'fa-globe' };
+        const iconClasses = { 'books': 'book', 'video': 'yt', 'pyq': '', 'website': 'web' };
+        
+        let resourcesHTML = matchedResources.map(r => {
+             if (tagToUse === 'video') {
+                 let finalLink = r.link_url || '';
+                 let videoId = 'dQw4w9WgXcQ';
+                 const ytMatch = finalLink.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
+                 if (ytMatch && ytMatch[1]) {
+                     videoId = ytMatch[1];
+                 }
+                 const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                 return `<a class="res-tag yt" href="javascript:void(0)" onclick="openVideoModal('${embedUrl}', '${r.title ? r.title.replace(/'/g, "\\'") : 'Video Test Proof'}')">
+                           <i class="fa-brands fa-youtube"></i> ${r.title}
+                         </a>`;
+             } else {
+                 return `<a class="res-tag ${iconClasses[tagToUse]}" href="${r.link_url}" target="_blank">
+                           <i class="${tagToUse === 'video' ? 'fa-brands' : 'fa-solid'} ${iconMap[tagToUse]}"></i> ${r.title}
+                         </a>`;
+             }
+        }).join('');
+        
+        if (matchedResources.length === 0) {
+            resourcesHTML = '<span class="text-muted" style="font-size:0.8rem">No links available in Supabase.</span>';
+        }
+
+        const focusHTML = stage.focus.map(f => `<li class="focus-item"><i class="fa-solid fa-chevron-right"></i>${f}</li>`).join('');
+        const tipsHTML = stage.tips ? stage.tips.map(t => `<div class="tip-item"><i class="fa-solid fa-lightbulb"></i><span>${t}</span></div>`).join('') : '';
+
+        const examHTML = stage.exam ? `
+      <div class="info-section">
+        <div class="info-title"><i class="fa-solid fa-file-lines"></i> KEY EXAM</div>
+        <div class="exam-info">
+          <div class="exam-name">${stage.exam.name}</div>
+          <div class="exam-rows">
+            ${stage.exam.eligibility ? `<div class="exam-row"><span>Eligibility</span><span>${stage.exam.eligibility}</span></div>` : ''}
+            ${stage.exam.mode ? `<div class="exam-row"><span>Mode</span><span>${stage.exam.mode}</span></div>` : ''}
+            ${stage.exam.frequency ? `<div class="exam-row"><span>When</span><span>${stage.exam.frequency}</span></div>` : ''}
+            ${stage.exam.marks ? `<div class="exam-row"><span>Marks</span><span>${stage.exam.marks}</span></div>` : ''}
+          </div>
+        </div>
+      </div>
+    ` : '';
+
+        const markBtnHTML = `<button class="mark-btn ${done ? '' : 'undone'}" onclick="toggleCompletion('${career.replace(/'/g, "\\'")}', ${i}, this)">
+      <i class="fa-solid fa-${done ? 'check' : 'circle-check'}"></i>
+      ${done ? 'Marked Complete!' : 'Mark as Completed'}
+    </button>`;
+
+        const html = `
+      <div class="stage" id="stage-${i}">
+        <div class="stage-dot ${dotClass}">${dotIcon}</div>
+        <div class="stage-card ${status}">
+          <div class="stage-header" onclick="toggleStage(${i})">
+            <div class="stage-header-left">
+              <div class="stage-num ${numClass}">${i + 1}</div>
+              <div>
+                <div class="stage-name">${stage.title}</div>
+                <div class="stage-desc">${stage.desc}</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.75rem;flex-shrink:0">
+              <span class="stage-badge ${badgeClass}">${badgeText}</span>
+              <i class="fa-solid fa-chevron-down stage-toggle ${active || done ? 'open' : ''}" id="toggle-${i}"></i>
+            </div>
+          </div>
+          <div class="stage-body ${active || done ? 'open' : ''}" id="body-${i}">
+            <div class="body-grid">
+              <div>
+                <div class="info-section">
+                  <div class="info-title"><i class="fa-solid fa-list-check"></i> WHAT TO DO</div>
+                  <ul class="focus-list">${focusHTML}</ul>
+                </div>
+                ${stage.tips ? `<div class="tips-box">${tipsHTML}</div>` : ''}
+                ${markBtnHTML}
+              </div>
+              <div>
+                ${examHTML}
+                <div class="info-section" style="margin-top:${stage.exam ? '1.25rem' : '0'}">
+                  <div class="info-title"><i class="fa-solid fa-book-open"></i> RESOURCES <span>(${tagToUse.toUpperCase()})</span></div>
+                  <div class="resource-tags">${resourcesHTML}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+        timeline.innerHTML += html;
+      });
+
+      updateProgressUI(career);
+    }
+
+    window.toggleStage = function (idx) {
+      const body = document.getElementById('body-' + idx);
+      const toggle = document.getElementById('toggle-' + idx);
+      body.classList.toggle('open');
+      toggle.classList.toggle('open');
+    }
+
+    function updateProgressUI(career) {
+      const stages = CAREER_DATA[career]?.stages || [];
+      const eduStage = EDU_STAGE_MAP[currentProfile.eduLevel] || 0;
+      let done = 0;
+      stages.forEach((_, i) => { if (i < eduStage || userCompletions[career + '_' + i]) done++; });
+      const pct = stages.length ? Math.round((done / stages.length) * 100) : 0;
+      document.getElementById('progFill').style.width = pct + '%';
+      document.getElementById('progPct').textContent = pct + '%';
+      document.getElementById('progressDesc').textContent = `${done} of ${stages.length} stages completed`;
+      document.getElementById('stagesLeftText').textContent = `${stages.length - done} stages remaining`;
+
+      const chips = document.getElementById('stageChips');
+      chips.innerHTML = '';
+      stages.forEach((s, i) => {
+        const isDone = i < eduStage || userCompletions[career + '_' + i];
+        const isActive = !isDone && i === eduStage;
+        const cls = isDone ? 'chip-done' : isActive ? 'chip-active' : 'chip-upcoming';
+        const label = isDone ? '✓' : isActive ? '→' : '○';
+        chips.innerHTML += `<span class="stage-chip ${cls}">${label} ${s.title.split('—')[0].split('(')[0].trim()}</span>`;
+      });
+    }
+
+    // CAREER SWITCHER
+    let pendingCareer = '';
+    window.openSwitcher = function () { document.getElementById('switcher').style.display = 'flex'; }
+    window.closeSwitcher = function () { document.getElementById('switcher').style.display = 'none'; pendingCareer = ''; document.querySelectorAll('.career-item').forEach(c => c.classList.remove('selected')); }
+    window.pickCareer = function (name, el) { document.querySelectorAll('.career-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); pendingCareer = name; }
+    window.applySwitch = async function () {
+      if (!pendingCareer) return;
+      const authData = await requireAuth();
+      if (!authData) return;
+      const user = authData.user;
+
+      // Update Supabase
+      const { error } = await supabase.from('Profile').update({ career: pendingCareer }).eq('id', user.id);
+      if (!error) {
+        currentProfile.career = pendingCareer;
+        invalidateCache();
+        closeSwitcher();
+        await renderRoadmap();
+      } else {
+        alert("Failed to change career: " + error.message);
+      }
+    }
+
+    window.openVideoModal = function(url, title) {
+      document.getElementById('videoModalTitle').textContent = title || 'Training Video (Test Proof)';
+      document.getElementById('videoIframe').src = url;
+      document.getElementById('videoModal').classList.add('show');
+    }
+
+    document.getElementById('closeVideoModal').addEventListener('click', () => {
+      document.getElementById('videoModal').classList.remove('show');
+      document.getElementById('videoIframe').src = ''; // stop playing
+    });
+
+    window.logout = async function () {
+      await signOut();
+      localStorage.removeItem('careez_logged_in');
+      window.location.href = 'login.html';
+    }
+
+    const savedTheme = localStorage.getItem('careez_theme');
+    if (savedTheme === 'light') { document.body.classList.add('light-mode'); document.getElementById('themeIcon').className = 'fa-solid fa-sun'; document.getElementById('themeLabel').textContent = 'Light Mode'; }
+
+    window.onload = fetchUserData;
+  </script>
+</body>
+
+</html>

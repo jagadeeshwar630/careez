@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareeZ | Previous Year Questions</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #06080f;
+      --surface: #0d1117;
+      --card: #111827;
+      --border: rgba(99, 102, 241, .15);
+      --accent: #6366f1;
+      --accent2: #f97316;
+      --text: #f1f5f9;
+      --muted: #64748b;
+      --sidebar: 260px
+    }
+
+    [data-theme="light"] {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --card: #f0f4ff;
+      --border: rgba(99, 102, 241, .15);
+      --text: #0f172a;
+      --muted: #64748b;
+    }
+
+    [data-theme="light"] .year-tag { background: #e2e8f0; }
+    [data-theme="light"] .filter-select { background: var(--surface); color: var(--text); }
+
+    .s-theme {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .88rem;
+      transition: background .2s;
+      margin-bottom: .25rem;
+    }
+
+    .s-theme:hover {
+      background: var(--card);
+      color: var(--text);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh
+    }
+
+    .sidebar {
+      width: var(--sidebar);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      overflow-y: auto;
+      z-index: 50
+    }
+
+    .s-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: 2rem;
+      text-decoration: none
+    }
+
+    .s-logo i {
+      color: var(--accent)
+    }
+
+    .s-nav {
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+      flex: 1
+    }
+
+    .s-nav a {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .88rem;
+      transition: all .2s
+    }
+
+    .s-nav a:hover {
+      background: var(--card);
+      color: var(--text)
+    }
+
+    .s-nav a.active {
+      background: rgba(99, 102, 241, .12);
+      color: var(--accent);
+      border: 1px solid rgba(99, 102, 241, .2)
+    }
+
+    .s-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: auto
+    }
+
+    .s-logout {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #ef4444;
+      font-weight: 600;
+      font-size: .88rem;
+      cursor: pointer
+    }
+
+    .s-logout:hover {
+      background: rgba(239, 68, 68, .08)
+    }
+
+    .main {
+      flex: 1;
+      margin-left: var(--sidebar);
+      padding: 1.5rem 2rem
+    }
+
+    .page-header {
+      margin-bottom: 1.25rem
+    }
+
+    .page-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: .3rem
+    }
+
+    .page-header p {
+      color: var(--muted);
+      font-size: .95rem
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap
+    }
+
+    .filter-select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .7rem 1rem;
+      color: var(--text);
+      font-family: 'Manrope', sans-serif;
+      min-width: 200px;
+      cursor: pointer;
+      font-size: .9rem;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--accent)
+    }
+
+    .pyq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+      animation: fadeIn 0.4s ease-in-out
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pyq-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      transition: all .3s;
+      display: flex;
+      flex-direction: column
+    }
+
+    .pyq-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent)
+    }
+
+    .pyq-exam {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: .3rem
+    }
+
+    .pyq-title {
+      color: var(--text);
+      font-size: .9rem;
+      margin-bottom: .5rem
+    }
+
+    .pyq-meta {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      color: var(--muted);
+      font-size: .75rem
+    }
+
+    .pyq-meta i {
+      margin-right: .3rem
+    }
+
+    .pyq-years {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .3rem;
+      margin-bottom: 1rem
+    }
+
+    .year-tag {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: .2rem .6rem;
+      border-radius: 4px;
+      font-size: .7rem;
+      color: var(--muted)
+    }
+
+    .pyq-footer {
+      display: flex;
+      gap: .5rem;
+      margin-top: auto
+    }
+
+    .pyq-btn {
+      flex: 1;
+      padding: .7rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+      text-align: center
+    }
+
+    .pyq-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    .pyq-btn.download {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff
+    }
+
+    .pyq-btn.download:hover {
+      background: #4f46e5
+    }
+
+    .online-test-banner {
+      background: linear-gradient(135deg, rgba(99, 102, 241, .1), rgba(249, 115, 22, .1));
+      border: 1px solid var(--accent);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem
+    }
+
+    .banner-text h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      margin-bottom: .3rem
+    }
+
+    .banner-text p {
+      color: var(--muted);
+      font-size: .85rem
+    }
+
+    .banner-btn {
+      padding: .8rem 1.5rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: .9rem;
+      transition: all .2s
+    }
+
+    .banner-btn:hover {
+      background: #4f46e5;
+      transform: translateY(-1px)
+    }
+
+    .hamburger {
+      display: none;
+      position: fixed;
+      top: .9rem;
+      left: .9rem;
+      z-index: 400;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1.1rem;
+      transition: all .2s;
+      box-shadow: 0 2px 10px rgba(0,0,0,.15);
+    }
+    .hamburger:hover { border-color: var(--accent); color: var(--accent); }
+    .mob-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 199;
+      backdrop-filter: blur(3px);
+    }
+    .mob-overlay.open { display: block; }
+
+    @media(max-width:768px) {
+      .hamburger { display: flex; }
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform .3s cubic-bezier(.4,0,.2,1);
+        z-index: 200;
+        box-shadow: 4px 0 24px rgba(0,0,0,.25);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main {
+        margin-left: 0;
+        padding: 4.5rem 1rem 1.5rem;
+      }
+      .page-header h1 { font-size: 1.35rem; }
+      .filter-bar { flex-direction: column; gap: .6rem; }
+      .filter-select { min-width: 0; width: 100%; }
+      .pyq-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .pyq-card { padding: 1rem; }
+      .pyq-footer { flex-direction: column; }
+      .pyq-btn { width: 100%; padding: .65rem; }
+      .online-test-banner { flex-direction: column; text-align: center; }
+      .banner-btn { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+  <button class="hamburger" id="mobMenuBtn" onclick="window.toggleMobMenu()" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+  <div class="mob-overlay" id="mobOverlay" onclick="window.closeMobMenu()"></div>
+
+  <aside class="sidebar">
+    <a href="dashboard.html" class="s-logo"><i class="fa-solid fa-graduation-cap"></i> CareeZ</a>
+    <nav class="s-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="Careers.html"><i class="fa-solid fa-briefcase"></i> Careers</a>
+      <a href="roadmap.html"><i class="fa-solid fa-road"></i> Roadmaps</a>
+      <a href="Exams.html"><i class="fa-solid fa-file-lines"></i> Exams</a>
+      <a href="PYQs.html" class="active"><i class="fa-solid fa-book-open"></i> PYQs</a>
+      <a href="Resources.html"><i class="fa-solid fa-folder"></i> Resources</a>
+      <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+    </nav>
+
+    <div class="s-bottom">
+      <div class="s-theme" id="themeToggleBtn" onclick="window.toggleTheme()">
+        <i class="fa-solid fa-moon" id="themeIcon"></i> <span id="themeLabel">Dark Mode</span>
+      </div>
+      <div class="s-logout" onclick="window.logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <h1>Previous Year Questions</h1>
+      <p>Practice with real exam papers from the last 10+ years</p>
+    </div>
+
+    <div class="filter-bar">
+      <select class="filter-select" id="examFilter" onchange="filterPYQs()">
+        <option value="all">All Exams</option>
+        <option value="CISF">CISF AC(EXE)</option>
+        <option value="Geo-Scientist">Geo-Scientist</option>
+        <option value="LDCE">LDCE & Steno</option>
+        <option value="Engineering Services">Engineering Services</option>
+        <option value="Indian Forest Service">Indian Forest Service</option>
+      </select>
+      <select class="filter-select" id="yearFilter" onchange="filterPYQs()">
+        <option value="all">All Years</option>
+        <option value="2026">2026</option>
+        <option value="2025">2025</option>
+      </select>
+    </div>
+
+    <div class="pyq-grid" id="pyqGrid"></div>
+  </main>
+
+  <script type="module">
+    import { supabase, requireAuth, signOut } from './supabase-config.js';
+
+    // Theme init
+    (function() {
+      const t = localStorage.getItem('careez_theme') || 'dark';
+      if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    })();
+    window.toggleTheme = function() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('careez_theme', 'dark'); }
+      else { document.documentElement.setAttribute('data-theme', 'light'); localStorage.setItem('careez_theme', 'light'); }
+      _updateThemeBtn();
+    };
+    function _updateThemeBtn() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+      if (icon) icon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      if (label) label.textContent = isLight ? 'Light Mode' : 'Dark Mode';
+    }
+    _updateThemeBtn();
+
+    window.toggleMobMenu = function() {
+      document.querySelector('.sidebar').classList.toggle('open');
+      document.getElementById('mobOverlay').classList.toggle('open');
+    };
+    window.closeMobMenu = function() {
+      document.querySelector('.sidebar').classList.remove('open');
+      document.getElementById('mobOverlay').classList.remove('open');
+    };
+    document.querySelectorAll('.s-nav a').forEach(a => a.addEventListener('click', window.closeMobMenu));
+
+    let pyqs = [];
+
+    async function fetchPYQs() {
+      const { data, error } = await supabase.from('PYQs').select('*');
+      if (error) {
+        console.error('Error fetching PYQs:', error);
+        return;
+      }
+      pyqs = [...(data || []), ...PYQS_LOCAL.filter(p => !(data || []).some(dbP => dbP.download_url === p.download_url))];
+      
+      // Dynamically populate exam filter
+      const examFilter = document.getElementById('examFilter');
+      const uniqueExams = [...new Set(pyqs.map(p => p.exam_id))].filter(Boolean);
+      uniqueExams.forEach(eid => {
+        if (![...examFilter.options].some(opt => opt.value === eid)) {
+          const opt = document.createElement('option');
+          opt.value = eid;
+          opt.textContent = eid.toUpperCase();
+          examFilter.appendChild(opt);
+        }
+      });
+      // Dynamically populate year filter
+      const yearFilter = document.getElementById('yearFilter');
+      const uniqueYears = [...new Set(pyqs.map(p => p.year))].filter(Boolean).sort((a,b) => b-a);
+      uniqueYears.forEach(y => {
+        if (![...yearFilter.options].some(opt => opt.value == y)) {
+          const opt = document.createElement('option');
+          opt.value = y;
+          opt.textContent = y;
+          yearFilter.appendChild(opt);
+        }
+      });
+
+      window.filterPYQs();
+    }
+
+
+    const PYQS_LOCAL = [
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-1: Financial Reporting –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/90237bos-aps3809-final-p1.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-2: Advanced Financial Management –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/90270bos-aps3809-final-p2.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-3: Advanced Auditing, Assurance and Professional Ethics –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/90287bos-aps3809-final-p3.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-4: Direct Tax Laws & International Taxation –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/90293bos-aps3809-final-p4.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-5: Indirect Tax Laws –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/90320bos-aps3809-final-p5.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-6: Integrated Business Solutions (Multidisciplinary Case Study with Strategic Management) –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/90368bos-aps3809-final-p6.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-1: Financial Reporting –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/88181bos-aps2265-final-p1.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-2: Advanced Financial Management –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/88182bos-aps2265-final-p2.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-3: Advanced Auditing, Assurance and Professional Ethics –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/88298bos-final160925-p3.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-4: Direct Tax Laws & International Taxation –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/88299bos-final160925-p4.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-5: Indirect Tax Laws –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/88300bos-final160925-p5.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-6: Integrated Business Solutions (Multidisciplinary Case Study with Strategic Management) –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/88274bos-aps2265-final-p6.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-1: Financial Reporting –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/85768bos-aps471-final-p1.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-2: Advanced Financial Management –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/85769bos-aps471-final-p2.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-3: Advanced Auditing, Assurance and Professional Ethics –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/85945bos-aps471-final-p3.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-4: Direct Tax Laws & International Taxation –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/85946bos-aps471-final-p4.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-5: Indirect Tax Laws –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/85947bos-aps471-final-p5.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-6: Integrated Business Solutions (Multidisciplinary Case Study with Strategic Management) –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/85948bos-aps471-final-p6.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-1: Financial Reporting –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/82721bos66806.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-2: Advanced Financial Management –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/82720bos66805.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-3: Advanced Auditing, Assurance and Professional Ethics –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/82760bos66833.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-4: Direct Tax Laws & International Taxation –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/82790bos66863.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-5: Indirect Tax Laws –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/82884bos66971p5.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-6: Integrated Business Solutions (Multidisciplinary Case Study with Strategic Management) –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/82885bos66971p6.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-1: Financial Reporting –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/80128bos64233.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-2: Advanced Financial Management –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/80144bos64256.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-3: Advanced Auditing, Assurance and Professional Ethics –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/80192bos64339.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-4: Direct Tax Laws & International Taxation –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/80261bos64418.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-5: Indirect Tax Laws –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/80531bos64714-p5.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CA PYQS",
+    "paper_name": "Paper-6: Integrated Business Solutions (Multidisciplinary Case Study with Strategic Management) –",
+    "year": 2026,
+    "download_url": "https://resource.cdn.icai.org/80532bos64714-p6.pdf",
+    "category": "Other"
+  },
+  {
+    "exam_id": "CISF AC(EXE) LDCE-2026",
+    "paper_name": "General Ability and Intelligence and Professional Skill (20.63 MB)",
+    "year": 2026,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP_CISF2026_GenAbili_Intellig_ProfessSkill_09032026.pdf",
+    "category": "CISF"
+  },
+  {
+    "exam_id": "CISF AC(EXE) LDCE-2026",
+    "paper_name": "Essay, Precis Writing and Comprehension (3.83 MB)",
+    "year": 2026,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP_CISF2026_EssayPrecisWritCompre_09032026.pdf",
+    "category": "CISF"
+  },
+  {
+    "exam_id": "Combined Geo-Scientist (Preliminary) Examination, 2026",
+    "paper_name": "Paper - I General Studies (12.67 MB)",
+    "year": 2026,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP_CGSPE26_GenStud_I_09022026.pdf",
+    "category": "Geo-Scientist"
+  },
+  {
+    "exam_id": "Combined Geo-Scientist (Preliminary) Examination, 2026",
+    "paper_name": "Paper - II Chemistry (18.07 MB)",
+    "year": 2026,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP_CGSPE26_Chem_II_09022026.pdf",
+    "category": "Geo-Scientist"
+  },
+  {
+    "exam_id": "Combined Geo-Scientist (Preliminary) Examination, 2026",
+    "paper_name": "Paper - II Geology-Hydrogeology (18.32 MB)",
+    "year": 2026,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP_CGSPE26_Geol-Hydrogeo_II_09022026.pdf",
+    "category": "Geo-Scientist"
+  },
+  {
+    "exam_id": "Combined Geo-Scientist (Preliminary) Examination, 2026",
+    "paper_name": "Paper - II Geophysics (11.67 MB)",
+    "year": 2026,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP_CGSPE26_Geophy_II_09022026.pdf",
+    "category": "Geo-Scientist"
+  },
+  {
+    "exam_id": "Combined Section Officers' (Grade 'B') LDCE-2025 and Combined Stenographers' (Grade 'B'-Grade-'I') LDCE-2019, 2020 & 2021",
+    "paper_name": "Dictation (Hindi)-20.12.2025 F/N (13.89 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-Steno-19-21-FN%2820.12%29-Hindi-020126.mp3",
+    "category": "LDCE"
+  },
+  {
+    "exam_id": "Combined Section Officers' (Grade 'B') LDCE-2025 and Combined Stenographers' (Grade 'B'-Grade-'I') LDCE-2019, 2020 & 2021",
+    "paper_name": "Dictation (Hindi)-20.12.2025 A/N (9.26 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-Steno-19-21-AN%2820.12%29-HINDI-020126.mp3",
+    "category": "LDCE"
+  },
+  {
+    "exam_id": "Combined Section Officers' (Grade 'B') LDCE-2025 and Combined Stenographers' (Grade 'B'-Grade-'I') LDCE-2019, 2020 & 2021",
+    "paper_name": "Dictation (English)-20.12.2025 F/N (13.9 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-Steno-19-21-FN%2820.12%29-ENG-020126.mp3",
+    "category": "LDCE"
+  },
+  {
+    "exam_id": "Combined Section Officers' (Grade 'B') LDCE-2025 and Combined Stenographers' (Grade 'B'-Grade-'I') LDCE-2019, 2020 & 2021",
+    "paper_name": "Dictation (English)-27.12.2025 F/N (13.86 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-Steno-19-21-FN%2827.12%29-020126.mp3",
+    "category": "LDCE"
+  },
+  {
+    "exam_id": "Combined Section Officers' (Grade 'B') LDCE-2025 and Combined Stenographers' (Grade 'B'-Grade-'I') LDCE-2019, 2020 & 2021",
+    "paper_name": "Dictation (English)-27.12.2025 A/N (13.96 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-Steno-19-21-AN%2827.12%29-020126.mp3",
+    "category": "LDCE"
+  },
+  {
+    "exam_id": "Combined Section Officers' (Grade 'B') LDCE-2025 and Combined Stenographers' (Grade 'B'-Grade-'I') LDCE-2019, 2020 & 2021",
+    "paper_name": "Dictation (English)-28.12.2025 F/N (13.9 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-Steno-19-21-FN%2828.12%29-020126.mp3",
+    "category": "LDCE"
+  },
+  {
+    "exam_id": "Combined Section Officers' (Grade 'B') LDCE-2025 and Combined Stenographers' (Grade 'B'-Grade-'I') LDCE-2019, 2020 & 2021",
+    "paper_name": "Dictation (English)-28.12.2025 A/N (13.93 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-Steno-19-21-AN%2828.12%29-020126.mp3",
+    "category": "LDCE"
+  },
+  {
+    "exam_id": "Combined Section Officers' (Grade 'B') LDCE-2025 and Combined Stenographers' (Grade 'B'-Grade-'I') LDCE-2019, 2020 & 2021",
+    "paper_name": "Paper - I (22.21 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-SO-25-Steno19-21-PAPER-I-151225.pdf",
+    "category": "LDCE"
+  },
+  {
+    "exam_id": "Combined Section Officers' (Grade 'B') LDCE-2025 and Combined Stenographers' (Grade 'B'-Grade-'I') LDCE-2019, 2020 & 2021",
+    "paper_name": "Paper - II (Procedure and Practice, Categories I, IV, VIII, IX and XI) (33.35 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-SO-25-Steno19-21-ProcedurePracticeCategoriesI-IV-VIII-IX-AND-XI.pdf",
+    "category": "LDCE"
+  },
+  {
+    "exam_id": "Combined Section Officers' (Grade 'B') LDCE-2025 and Combined Stenographers' (Grade 'B'-Grade-'I') LDCE-2019, 2020 & 2021",
+    "paper_name": "Paper - II (Procedure and Practice, Categories II and V) (34.14 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-SO-25-Steno19-21-ProcedurePracticeCategories-II-and-V-151225.pdf",
+    "category": "LDCE"
+  },
+  {
+    "exam_id": "Combined Section Officers' (Grade 'B') LDCE-2025 and Combined Stenographers' (Grade 'B'-Grade-'I') LDCE-2019, 2020 & 2021",
+    "paper_name": "Paper - II (Procedure and Practice, Categories III and VII) (22.28 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-SO-25-Steno19-21-ProcedurePracticeCategory-III-and-VII-151225.pdf",
+    "category": "LDCE"
+  },
+  {
+    "exam_id": "Combined Section Officers' (Grade 'B') LDCE-2025 and Combined Stenographers' (Grade 'B'-Grade-'I') LDCE-2019, 2020 & 2021",
+    "paper_name": "Paper - II (Procedure and Practice, Categories VI and X) (34.24 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-SO-25-Steno19-21-ProcedurePractice-Category-VI-and-X-151225.pdf",
+    "category": "LDCE"
+  },
+  {
+    "exam_id": "Combined Section Officers' (Grade 'B') LDCE-2025 and Combined Stenographers' (Grade 'B'-Grade-'I') LDCE-2019, 2020 & 2021",
+    "paper_name": "Paper - III (Noting and Drafting, Precis Writing) (13.02 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-SO-25-Steno19-21-NOTING-AND-DRAFTING-PRECIS-WRITING-151225.pdf",
+    "category": "LDCE"
+  },
+  {
+    "exam_id": "Engineering(Preliminary)2026",
+    "paper_name": "Paper - I General Studies and Engineering Aptitude (17.53 MB)",
+    "year": 2026,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP_ESPE26_GenStud_EnggAptit_I_09022026.pdf",
+    "category": "Engineering Services"
+  },
+  {
+    "exam_id": "Engineering(Preliminary)2026",
+    "paper_name": "Paper - II Electrical Engineering (18.5 MB)",
+    "year": 2026,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP_ESPE26_ElecEngg_II_09022026.pdf",
+    "category": "Engineering Services"
+  },
+  {
+    "exam_id": "Engineering(Preliminary)2026",
+    "paper_name": "Paper - II Electronics and Telecommunication Engineering (18.91 MB)",
+    "year": 2026,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP_ESPE26_ElecTelecomEngg_II_09022026.pdf",
+    "category": "Engineering Services"
+  },
+  {
+    "exam_id": "Engineering(Preliminary)2026",
+    "paper_name": "Paper - II Mechanical Engineering (16.73 MB)",
+    "year": 2026,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP_ESPE26_MechEngg_II_09022026.pdf",
+    "category": "Engineering Services"
+  },
+  {
+    "exam_id": "Engineering(Preliminary)2026",
+    "paper_name": "Paper - II Civil Engineering (16.58 MB)",
+    "year": 2026,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP_ESPE26_CivilEngg_II_09022026.pdf",
+    "category": "Engineering Services"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Agriculture Paper - I (989.44 KB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-AGRICULTURE-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Agriculture Paper - II (1.16 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-AGRICULTURE-PAPER-II-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Agricultural Engineering Paper - I (1.39 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-AGRICULTURAL-ENGINEERING-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Agricultural Engineering Paper - II (2.24 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-AGRICULTURAL-ENGINEERING-PAPER-II-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Animal Husbandry and Veterinary Science Paper - I (1005.42 KB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-ANIMALHUSBANDRY-VETERINARYSCIENCE-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Animal Husbandry and Veterinary Science Paper - II (925.82 KB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-ANIMALHUSBANDRY-VETERINARYSCIENCE-PAPER-II-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Botany Paper - I (1.1 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-BOTANY-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Botany Paper - II (775.71 KB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-BOTANY-PAPER-II-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Chemistry Paper - I (2.11 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-CHEMISTRY-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Chemistry Paper - II (2.61 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-CHEMISTRY-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Chemical Engineering Paper - I (2.14 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-CHEMICAL-ENGINEERING-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Chemical Engineering Paper - II (3.28 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-CHEMICAL-ENGINEERING-PAPER-II-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Civil Engineering Paper - I (3.33 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-CIVIL-ENGINEERING-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Civil Engineering Paper - II (2.19 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-CIVIL-ENGINEERING-PAPER-II-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Forestry Paper - I (976.87 KB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-FORESTRY-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Forestry Paper - II (1.26 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-FORESTRY-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Geology Paper - I (1.16 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-GEOLOGY-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Geology Paper - II (1.13 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-GEOLOGY-PAPER-II-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "General English (2.25 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-GENERAL-ENGLISH-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "General Knowledge (1.13 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-GENERAL-KNOWLEDGE-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Mathematics Paper - I (1.88 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-MATHEMATICS-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Mathematics Paper - II (1.76 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-MATHEMATICS-PAPER-II-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Mechanical Engineering Paper - I (2.19 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-MECHANICAL-ENGINEERING-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Mechanical Engineering Paper - II (4.09 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-MECHANICAL-ENGINEERING-PAPER-II-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Physics Paper - I (2.21 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-PHYSICS-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Physics Paper - II (1.84 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-PHYSICS-PAPER-II-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Statistics Paper - I (3.96 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-STATISTICS-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Statistics Paper - II (2.29 MB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-STATISTICS-PAPER-II-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Zoology Paper - I (808.83 KB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-ZOOLOGY-PAPER-I-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "Indian Forest Service (Main) Examination, 2025+",
+    "paper_name": "Zoology Paper - II (990.89 KB)",
+    "year": 2025,
+    "download_url": "https://upsc.gov.in/sites/default/files/QP-IFSM-25-ZOOLOGY-PAPER-II-241125.pdf",
+    "category": "Indian Forest Service"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250530112202.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250530112234.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250530112312.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250530112357.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250530112440.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715175733.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715175909.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715180027.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715180122.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715180225.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715180330.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715180440.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715180546.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715180647.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715180743.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715180852.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715180948.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715181045.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715181149.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715181245.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715181340.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715181442.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715181537.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "JEE mains",
+    "paper_name": "QP Download:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20250715181638.pdf",
+    "category": "JEE"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "Mock Test:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Quiz",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET Assamese English 45 QP (2025-05-04 Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204700_d69dfdb5.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET Assamese English 46 QP (2025-05-04 Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204700_b90ee18a.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET Assamese English 47 QP (2025-05-04 Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204700_53058a89.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET Assamese English 48 QP (2025-05-04 Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204701_3ef5e569.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET Bengali English 45 QP (2025-05-04 Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204701_00e17c62.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET Bengali English 46 QP (2025-05-04 Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204701_75c5c08f.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET Bengali English 47 QP (2025-05-04 Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204701_f1b49a3a.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET Bengali English 48 QP (2025-05-04 Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204701_c03c57c8.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET English 45 QP (2025-05-04 Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204701_227d5d1f.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET English 46 QP (2025-05-04 Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204701_62e8e606.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NTA Registration and MoA:",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/NTARegistrationandMOA.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET Telugu English 45 (2025-05-04, Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204702_5436b424.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET Telugu English 46 (2025-05-04, Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204702_419eab58.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET Telugu English 47 (2025-05-04, Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204702_f1d4745a.pdf",
+    "category": "NEET"
+  },
+  {
+    "exam_id": "NEET pyqs 2025",
+    "paper_name": "NEET Telugu English 48 (2025-05-04, Shift 1):",
+    "year": 2025,
+    "download_url": "https://nta.ac.in/Download/ExamPaper/Paper_20251004204702_478b4045.pdf",
+    "category": "NEET"
+  }
+];
+
+    let currentExamFilter = 'all';
+    let currentYearFilter = 'all';
+
+    function renderPYQs() {
+      const grid = document.getElementById('pyqGrid');
+      if (!grid) return;
+      const filtered = pyqs.filter(p => {
+        // Use exam_id for filtering
+        if (currentExamFilter !== 'all' && p.exam_id !== currentExamFilter) return false;
+        if (currentYearFilter !== 'all' && p.year !== parseInt(currentYearFilter)) return false;
+        return true;
+      });
+
+      grid.innerHTML = filtered.map(p => {
+        return `
+    <div class="pyq-card">
+      <div class="pyq-exam">${p.exam_id || 'Exam Paper'}</div>
+      <div class="pyq-title">${p.paper_name}</div>
+      <div class="pyq-meta">
+        <span><i class="fa-regular fa-file-pdf"></i> PDF</span>
+        <span><i class="fa-regular fa-calendar"></i> ${p.year}</span>
+      </div>
+      <div class="pyq-footer">
+        <a href="${p.download_url}" class="pyq-btn download" target="_blank" download>
+          <i class="fa-solid fa-download"></i> Download
+        </a>
+        <a href="${p.download_url}" class="pyq-btn" target="_blank">
+          <i class="fa-regular fa-eye"></i> View
+        </a>
+      </div>
+    </div>
+  `}).join('');
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--muted);">
+          <i class="fa-regular fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+          <p>No papers found for this selection.</p>
+        </div>`;
+      }
+    }
+
+
+
+
+    window.filterPYQs = function () {
+      currentExamFilter = document.getElementById('examFilter').value;
+      currentYearFilter = document.getElementById('yearFilter').value;
+      renderPYQs();
+    }
+
+    window.downloadPYQ = function (exam, title) {
+      // Simulate download
+      alert(`📥 Download started for:\n${exam} - ${title}\n\nIn production, this would download the actual PDF.`);
+    }
+
+    window.viewSolutions = function (exam, title) {
+      alert(`📝 Solutions for:\n${exam} - ${title}\n\nIn production, this would show detailed solutions.`);
+    }
+
+    window.logout = async function () {
+      await signOut();
+      localStorage.removeItem('careez_logged_in');
+      window.location.href = 'login.html';
+    }
+
+    async function init() {
+      const authData = await requireAuth();
+      if (!authData) return;
+
+      // Check for filter from exams page
+      const filterExam = localStorage.getItem('filter_exam');
+      if (filterExam) {
+        document.getElementById('examFilter').value = filterExam.split(' ')[0];
+        localStorage.removeItem('filter_exam');
+      }
+      
+      fetchPYQs();
+    }
+
+
+    window.onload = init;
+  </script>
+</body>
+
+</html>

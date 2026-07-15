@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CareeZ | Explore Careers</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* ===== BASE VARIABLES (Light Mode Fallbacks) ===== */
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --card: #f1f5f9;
+  --border: #e2e8f0;
+  --accent: #2563eb;
+  --accent2: #f97316;
+  --success: #22c55e;
+  --text: #0f172a;
+  --muted: #64748b;
+  --sidebar: 260px;
+}
+
+/* ===== DARK MODE VARIABLES (Careers.html Default) ===== */
+[data-theme="dark"],
+:root:not([data-theme="light"]) body {
+  --bg: #06080f;
+  --surface: #0d1117;
+  --card: #111827;
+  --border: rgba(99,102,241,.15);
+  --accent: #6366f1;
+  --accent2: #f97316;
+  --success: #22c55e;
+  --text: #f1f5f9;
+  --muted: #64748b;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: var(--sidebar);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  overflow-y: auto;
+  z-index: 50;
+  transition: all 0.3s;
+}
+
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  text-decoration: none;
+}
+
+.logo i {
+  color: var(--accent);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.nav a i {
+  width: 20px;
+  font-size: 16px;
+}
+
+.nav a.active {
+  background: rgba(99,102,241,.12);
+  color: var(--accent);
+  border: 1px solid rgba(99,102,241,.2);
+}
+
+.nav a:hover:not(.active) {
+  background: var(--card);
+  color: var(--text);
+}
+
+.sidebar-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  margin-top: auto;
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+  margin-bottom: 4px;
+}
+
+.toggle-btn:hover {
+  background: var(--card);
+  color: var(--text);
+}
+
+.logout {
+  color: #ef4444;
+}
+
+.logout:hover {
+  background: rgba(239,68,68,.08) !important;
+  color: #ef4444;
+}
+
+/* ===== MAIN ===== */
+.main {
+  flex: 1;
+  margin-left: var(--sidebar);
+  padding: 2.5rem 3rem;
+  max-width: calc(100% - var(--sidebar));
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 0.3rem;
+  color: var(--text);
+}
+
+.sub {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+/* Search and Filter */
+.search-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.search-box {
+  position: relative;
+  max-width: 600px;
+}
+
+.search-box i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.8rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-box input:focus {
+  border-color: var(--accent);
+}
+
+.filter-btns {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.filter-btn:hover:not(.active) {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* ===== CAREER GRID ===== */
+.career-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 10px 30px -10px rgba(99,102,241,.2);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.card-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.difficulty-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0.2rem 0.8rem;
+  border-radius: 50px;
+}
+
+.diff-very-high, .diff-high {
+  background: rgba(239,68,68,.12);
+  color: #f87171;
+}
+
+.diff-moderate {
+  background: rgba(245,158,11,.12);
+  color: #fbbf24;
+}
+
+.diff-low {
+  background: rgba(34,197,94,.12);
+  color: #4ade80;
+}
+
+.card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  color: var(--text);
+}
+
+.card-exam {
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.tags span {
+  display: inline-block;
+  background: rgba(99,102,241,.12);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding-top: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.duration {
+  color: var(--muted);
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ===== CAREER DETAILS MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal-container {
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+  animation: modalSlide 0.3s ease;
+  color: var(--text);
+}
+
+@keyframes modalSlide {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 10;
+  border-radius: 24px 24px 0 0;
+}
+
+.modal-header h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.close-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--muted);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.career-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.meta-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.meta-value i {
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
+.detail-section {
+  margin-bottom: 28px;
+}
+
+.detail-section h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+}
+
+.detail-section h3 i {
+  color: var(--accent);
+}
+
+.overview-text {
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+/* Roadmap */
+.roadmap {
+  position: relative;
+  padding-left: 30px;
+}
+
+.roadmap::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+}
+
+.roadmap-step {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.step-dot {
+  position: absolute;
+  left: -30px;
+  top: 2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--surface);
+  box-shadow: 0 2px 8px rgba(99,102,241,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.step-content {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.step-content h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.step-content p {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.step-duration {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Skills */
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-tag {
+  background: rgba(99,102,241,.12);
+  color: var(--accent);
+  border: 1px solid rgba(99,102,241,.2);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Exams Table */
+.exams-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.exams-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 380px;
+}
+
+.exams-table th {
+  text-align: left;
+  padding: 12px;
+  background: var(--card);
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+}
+
+.exams-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.exams-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Resources */
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.resource-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.resource-card:hover {
+  transform: translateY(-3px);
+  background: rgba(99,102,241,.12);
+  border-color: var(--accent);
+}
+
+.resource-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.resource-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.resource-type {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.modal-footer {
+  padding: 16px 24px 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  border-top: 1px solid var(--border);
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-family: 'Manrope', sans-serif;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary:hover {
+  background: #4f46e5;
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.hamburger {
+  display: none;
+  position: fixed;
+  top: .9rem;
+  left: .9rem;
+  z-index: 400;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 1.1rem;
+  transition: all .2s;
+  box-shadow: 0 2px 10px rgba(0,0,0,.15);
+}
+.hamburger:hover { border-color: var(--accent); color: var(--accent); }
+
+.mob-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 199;
+  backdrop-filter: blur(3px);
+}
+.mob-overlay.open { display: block; }
+
+@media(max-width: 768px) {
+  .hamburger { display: flex; }
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+    z-index: 200;
+    box-shadow: 4px 0 24px rgba(0,0,0,.25);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .main {
+    margin-left: 0;
+    padding: 4.5rem 1rem 1.5rem;
+    max-width: 100%;
+  }
+  h1 { font-size: 1.4rem; }
+  .sub { font-size: .85rem; margin-bottom: 1.25rem; }
+  .search-box { max-width: 100%; }
+  .search-box input { font-size: .9rem; }
+  .filter-btns { gap: .4rem; }
+  .filter-btn { padding: .4rem .85rem; font-size: .8rem; }
+  .career-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .card { padding: 1.1rem; }
+  .card h3 { font-size: 1rem; }
+
+  /* Modal full-screen on mobile */
+  .modal-overlay { padding: 0; align-items: flex-end; }
+  .modal-container {
+    width: 100%;
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 20px 20px 0 0;
+    margin: 0;
+  }
+  .modal-header { padding: 16px 16px 12px; }
+  .modal-header h2 { font-size: 1.1rem; gap: 8px; }
+  .modal-body { padding: 16px; }
+  .career-meta { grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px; }
+  .exams-table-wrap { margin-top: 0; }
+  .resources-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .modal-footer { flex-direction: column; padding: 12px 16px 20px; }
+  .modal-footer .btn { width: 100%; justify-content: center; }
+  .roadmap { padding-left: 22px; }
+  .step-dot { left: -22px; width: 18px; height: 18px; font-size: 9px; }
+}
+
+</style>
+</head>
+
+<body>
+
+<button class="hamburger" id="mobMenuBtn" onclick="window.toggleMobMenu()" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+<div class="mob-overlay" id="mobOverlay" onclick="window.closeMobMenu()"></div>
+
+<aside class="sidebar">
+  <a href="dashboard.html" class="logo"><i class="fa-solid fa-graduation-cap"></i> CareeZ</a>
+  <div class="nav">
+    <a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+    <a class="active"><i class="fa-solid fa-briefcase"></i> Careers</a>
+    <a href="roadmap.html"><i class="fa-solid fa-road"></i> Roadmaps</a>
+    <a href="Exams.html"><i class="fa-solid fa-file-lines"></i> Exams</a>
+    <a href="PYQs.html"><i class="fa-solid fa-book-open"></i> PYQs</a>
+    <a href="Resources.html"><i class="fa-solid fa-folder"></i> Resources</a>
+    <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="toggle-btn" id="themeToggleBtn" onclick="window.toggleTheme()">
+      <i class="fa-solid fa-moon" id="themeIcon"></i> <span id="themeLabel">Dark Mode</span>
+    </div>
+    <div class="toggle-btn logout" onclick="window.logout()">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <h1>Explore Careers</h1>
+  <p class="sub">Browse detailed roadmaps for 20+ career paths — from start to success</p>
+
+  <div class="search-section">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Search careers (e.g., IAS, Doctor, Engineer...)" onkeyup="window.filterCareers()">
+    </div>
+    <div class="filter-btns">
+      <button class="filter-btn active" onclick="window.filterByStream('all', this)">All</button>
+      <button class="filter-btn" onclick="window.filterByStream('government', this)">Govt</button>
+      <button class="filter-btn" onclick="window.filterByStream('medical', this)">Medical</button>
+      <button class="filter-btn" onclick="window.filterByStream('tech', this)">Tech</button>
+      <button class="filter-btn" onclick="window.filterByStream('commerce', this)">Commerce</button>
+      <button class="filter-btn" onclick="window.filterByStream('arts', this)">Arts</button>
+    </div>
+  </div>
+
+  <div class="career-grid" id="careerGrid"></div>
+</main>
+
+<div class="modal-overlay" id="careerModal">
+  <div class="modal-container" id="modalContent"></div>
+</div>
+
+<script type="module">
+import { supabase, requireAuth, signOut } from './supabase-config.js';
+import { defaultCareers } from './careers-data.js';
+
+// Theme init — sync with other pages
+(function() {
+  const t = localStorage.getItem('careez_theme') || 'dark';
+  if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+})();
+window.toggleTheme = function() {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  if (isLight) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('careez_theme','dark'); }
+  else { document.documentElement.setAttribute('data-theme','light'); localStorage.setItem('careez_theme','light'); }
+  _updateThemeBtn();
+};
+function _updateThemeBtn() {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const icon = document.getElementById('themeIcon');
+  const label = document.getElementById('themeLabel');
+  if (icon) icon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  if (label) label.textContent = isLight ? 'Light Mode' : 'Dark Mode';
+}
+_updateThemeBtn();
+
+window.toggleMobMenu = function() {
+  document.querySelector('.sidebar').classList.toggle('open');
+  document.getElementById('mobOverlay').classList.toggle('open');
+};
+window.closeMobMenu = function() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('mobOverlay').classList.remove('open');
+};
+document.querySelectorAll('.nav a').forEach(a => a.addEventListener('click', window.closeMobMenu));
+
+let careers = [];
+let currentStream = 'all';
+let searchTerm = '';
+
+async function fetchCareers() {
+  // Instant load from local data
+  careers = [...defaultCareers];
+  window.renderCareers();
+
+  // Background sync with Supabase
+  try {
+    const { data, error } = await supabase.from('Careers').select('*');
+    if (!error && data && data.length > 0) {
+      const allCareers = [...defaultCareers];
+      data.forEach(dbC => {
+        const index = allCareers.findIndex(c => c.id === dbC.id);
+        if (index !== -1) {
+          allCareers[index] = { ...allCareers[index], ...dbC };
+        } else {
+          allCareers.push(dbC);
+        }
+      });
+      careers = allCareers;
+      window.renderCareers();
+    }
+  } catch (e) {
+    console.warn('Supabase sync skipped:', e.message);
+  }
+}
+
+window.renderCareers = function() {
+  const grid = document.getElementById('careerGrid');
+  const filtered = careers.filter(c => {
+    if (currentStream !== 'all' && (!c.stream || c.stream.toLowerCase() !== currentStream)) return false;
+    if (searchTerm && (!c.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (!c.description || !c.description.toLowerCase().includes(searchTerm.toLowerCase())))) return false;
+    return true;
+  });
+
+  grid.innerHTML = filtered.map(c => `
+    <div class="card" onclick="window.showCareerDetails('${c.id}')">
+      <div class="card-header">
+        <div class="card-icon">${c.icon || '&#x1F4BC;'}</div>
+        <span class="difficulty-badge diff-${(c.difficulty || 'moderate').toLowerCase()}">${(c.difficulty || 'moderate').toUpperCase()}</span>
+      </div>
+      <h3>${c.name}</h3>
+      <div class="card-exam"><i class="fa-solid fa-file-lines"></i> ${c.exam_name || c.exam || 'Varies'}</div>
+      <p>${c.description}</p>
+      <div class="tags">
+        ${(c.tags || []).map(t => `<span>${t}</span>`).join('')}
+      </div>
+      <div class="card-footer">
+        <span class="duration"><i class="fa-regular fa-clock"></i> ${c.duration || 'Varies'}</span>
+      </div>
+    </div>
+  `).join('');
+};
+
+// Career ID to Supabase category mapping
+const CAREER_CATEGORY_MAP = {
+  'ias':      'UPSC',
+  'ips':      'UPSC',
+  'mbbs':     'NEET',
+  'software': 'JEE',
+  'ca':       'CA',
+  'banking':  'BANKING',
+  'defence':  'DEFENCE',
+  'teacher':  'UGCNET'
+};
+
+const TAG_ICON_MAP = {
+  'books':   { icon: '&#x1F4D6;', label: 'Book' },
+  'video':   { icon: '&#x25B6;&#xFE0F;', label: 'Video' },
+  'website': { icon: '&#x1F310;', label: 'Website' },
+  'pyq':     { icon: '&#x1F4DD;', label: 'PYQ' }
+};
+
+window.showCareerDetails = async function(careerId) {
+  const career = careers.find(c => c.id === careerId);
+  if (!career) return;
+
+  const modal = document.getElementById('careerModal');
+  const modalContent = document.getElementById('modalContent');
+
+  const roadmapHTML = (career.roadmap || []).map(step => `
+    <div class="roadmap-step">
+      <div class="step-dot">${step.step}</div>
+      <div class="step-content">
+        <h4>${step.title}</h4>
+        <p>${step.desc}</p>
+        <div class="step-duration"><i class="fa-regular fa-clock"></i> ${step.duration || 'Varies'}</div>
+      </div>
+    </div>
+  `).join('');
+
+  const skillsHTML = (career.skills || []).map(s => `<span class="skill-tag">${s}</span>`).join('');
+
+  const examsList = career.exams_detail || career.exams || [];
+  const examsHTML = examsList.length > 0 ? `
+    <div class="exams-table-wrap">
+      <table class="exams-table">
+        <thead><tr><th>Exam</th><th>Stage</th><th>Frequency</th><th>Mode</th></tr></thead>
+        <tbody>
+          ${examsList.map(e => `
+            <tr><td>${e.name}</td><td>${e.stage || '-'}</td><td>${e.frequency || '-'}</td><td>${e.mode || '-'}</td></tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  ` : '<p style="font-size: 0.85rem; color: var(--muted);">No specific exams required</p>';
+
+  modalContent.innerHTML = `
+    <div class="modal-header">
+      <h2><span style="font-size:2rem;margin-right:10px;">${career.icon || '&#x1F4BC;'}</span> ${career.name}</h2>
+      <button class="close-btn" onclick="window.closeModal()"><i class="fa-solid fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="career-meta">
+        <div class="meta-item">
+          <span class="meta-label">Exam</span>
+          <span class="meta-value"><i class="fa-solid fa-file-lines"></i> ${career.exam_name || career.exam || 'Varies'}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Duration</span>
+          <span class="meta-value"><i class="fa-regular fa-clock"></i> ${career.duration || 'Varies'}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Qualification</span>
+          <span class="meta-value"><i class="fa-solid fa-graduation-cap"></i> ${career.qualification || 'As per exam requirements'}</span>
+        </div>
+      </div>
+      <div class="detail-section">
+        <h3><i class="fa-solid fa-circle-info"></i> Overview</h3>
+        <p class="overview-text">${career.long_desc || career.longDesc || career.description || career.overview || ''}</p>
+      </div>
+      <div class="detail-section">
+        <h3><i class="fa-solid fa-road"></i> Step-by-Step Roadmap</h3>
+        <div class="roadmap">${roadmapHTML}</div>
+      </div>
+      <div class="detail-section">
+        <h3><i class="fa-solid fa-code"></i> Required Skills</h3>
+        <div class="skills-container">${skillsHTML}</div>
+      </div>
+      <div class="detail-section">
+        <h3><i class="fa-solid fa-file-lines"></i> Key Exams</h3>
+        ${examsHTML}
+      </div>
+      <div class="detail-section">
+        <h3><i class="fa-solid fa-folder"></i> Recommended Resources</h3>
+        <div class="resources-grid" id="modal-resources">
+          <p style="font-size:0.85rem;color:var(--muted);">Loading resources...</p>
+        </div>
+      </div>
+      <div class="detail-section">
+        <h3><i class="fa-solid fa-building"></i> Top Recruiters</h3>
+        <p style="color:var(--text);"><strong>${career.recruiters || 'Top organizations and institutions'}</strong></p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="window.closeModal()">Close</button>
+      <button class="btn btn-primary" onclick="window.selectCareer('${career.name}')">
+        <i class="fa-solid fa-road"></i> Start This Career
+      </button>
+    </div>
+  `;
+
+  modal.style.display = 'flex';
+
+  // Async: fetch resources from Supabase
+  const category = CAREER_CATEGORY_MAP[careerId];
+  const resourcesEl = document.getElementById('modal-resources');
+
+  if (!category) {
+    resourcesEl.innerHTML = '<p style="font-size:0.85rem;color:var(--muted);">No resources available.</p>';
+    return;
+  }
+
+  try {
+    const { data: resources, error } = await supabase
+      .from('Resources')
+      .select('title, tag, link_url')
+      .eq('category', category)
+      .not('link_url', 'is', null)
+      .neq('link_url', '')
+      .neq('link_url', 'INVALID')
+      .limit(8);
+
+    if (error) throw error;
+
+    if (!resources || resources.length === 0) {
+      resourcesEl.innerHTML = '<p style="font-size:0.85rem;color:var(--muted);">No resources found for this career yet.</p>';
+      return;
+    }
+
+    resourcesEl.innerHTML = resources.map(r => {
+      const tagInfo = TAG_ICON_MAP[r.tag] || { icon: '&#x1F4DA;', label: r.tag || 'Resource' };
+      return `<a class="resource-card" href="${r.link_url}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+        <div class="resource-icon">${tagInfo.icon}</div>
+        <div class="resource-name">${r.title}</div>
+        <div class="resource-type">${tagInfo.label}</div>
+      </a>`;
+    }).join('');
+
+  } catch (err) {
+    console.error('Error fetching resources:', err.message);
+    resourcesEl.innerHTML = '<p style="font-size:0.85rem;color:var(--muted);">Could not load resources right now.</p>';
+  }
+};
+
+window.filterByStream = function(stream, btnElement) {
+  currentStream = stream;
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  btnElement.classList.add('active');
+  window.renderCareers();
+};
+
+window.filterCareers = function() {
+  searchTerm = document.getElementById('searchInput').value;
+  window.renderCareers();
+};
+
+window.closeModal = function() {
+  document.getElementById('careerModal').style.display = 'none';
+};
+
+window.onclick = function(event) {
+  const modal = document.getElementById('careerModal');
+  if (event.target === modal) modal.style.display = 'none';
+};
+
+window.selectCareer = async function(careerName) {
+  const authData = await requireAuth();
+  if (authData) {
+    try {
+      const { error } = await supabase
+        .from('Profile')
+        .upsert({ id: authData.user.id, career: careerName }, { onConflict: 'id' });
+      if (error) throw error;
+      window.location.href = 'roadmap.html';
+    } catch (err) {
+      alert('Error saving career: ' + err.message);
+    }
+  } else {
+    window.location.href = 'login.html';
+  }
+};
+
+window.logout = async function() {
+  await signOut();
+  window.location.href = 'login.html';
+};
+
+async function init() {
+  const authData = await requireAuth();
+  if (!authData) return;
+  fetchCareers();
+}
+
+window.onload = init;
+</script>
+
+</body>
+</html>

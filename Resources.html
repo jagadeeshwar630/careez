@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareeZ | Learning Resources</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #06080f;
+      --surface: #0d1117;
+      --card: #111827;
+      --border: rgba(99, 102, 241, .15);
+      --accent: #6366f1;
+      --accent2: #f97316;
+      --text: #f1f5f9;
+      --muted: #64748b;
+      --sidebar: 260px
+    }
+
+    [data-theme="light"] {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --card: #f0f4ff;
+      --border: rgba(99, 102, 241, .15);
+      --text: #0f172a;
+      --muted: #64748b;
+    }
+
+    [data-theme="light"] .video-thumb { background: linear-gradient(135deg, #e0e7ff, #c7d2fe) !important; }
+    [data-theme="light"] .book-tag { color: #4f46e5; }
+    [data-theme="light"] .filter-select { background: var(--surface); color: var(--text); }
+
+    .s-theme {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .88rem;
+      transition: background .2s;
+      margin-bottom: .25rem;
+    }
+
+    .s-theme:hover {
+      background: var(--card);
+      color: var(--text);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh
+    }
+
+    .sidebar {
+      width: var(--sidebar);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      overflow-y: auto;
+      z-index: 50
+    }
+
+    .s-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: 2rem;
+      text-decoration: none
+    }
+
+    .s-logo i {
+      color: var(--accent)
+    }
+
+    .s-nav {
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+      flex: 1
+    }
+
+    .s-nav a {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .88rem;
+      transition: all .2s
+    }
+
+    .s-nav a:hover {
+      background: var(--card);
+      color: var(--text)
+    }
+
+    .s-nav a.active {
+      background: rgba(99, 102, 241, .12);
+      color: var(--accent);
+      border: 1px solid rgba(99, 102, 241, .2)
+    }
+
+    .s-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: auto
+    }
+
+    .s-logout {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #ef4444;
+      font-weight: 600;
+      font-size: .88rem;
+      cursor: pointer
+    }
+
+    .s-logout:hover {
+      background: rgba(239, 68, 68, .08)
+    }
+
+    .main {
+      flex: 1;
+      margin-left: var(--sidebar);
+      padding: 1.5rem 2rem
+    }
+
+    .page-header {
+      margin-bottom: 1.25rem
+    }
+
+    .page-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: .3rem
+    }
+
+    .page-header p {
+      color: var(--muted);
+      font-size: .95rem
+    }
+
+    /* TABS */
+    .resource-tabs {
+      display: flex;
+      gap: .25rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .tab-btn {
+      padding: .75rem 1.5rem;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-family: 'Manrope', sans-serif;
+      font-weight: 600;
+      font-size: .9rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all .2s
+    }
+
+    .tab-btn:hover {
+      color: var(--text)
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent)
+    }
+
+    /* FILTERS */
+    .filter-section {
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap
+    }
+
+    .filter-select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .7rem 1rem;
+      color: var(--text);
+      font-family: 'Manrope', sans-serif;
+      min-width: 200px
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--accent)
+    }
+
+    /* BOOKS GRID */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+      animation: fadeIn 0.4s ease-in-out
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .book-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      transition: all .3s;
+      display: flex;
+      flex-direction: column
+    }
+
+    .book-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent)
+    }
+
+    .book-icon {
+      font-size: 2rem;
+      margin-bottom: .75rem;
+      color: var(--accent)
+    }
+
+    .book-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: .3rem
+    }
+
+    .book-author {
+      color: var(--muted);
+      font-size: .8rem;
+      margin-bottom: .5rem
+    }
+
+    .book-tag {
+      display: inline-block;
+      background: rgba(99, 102, 241, .1);
+      border: 1px solid rgba(99, 102, 241, .2);
+      color: #a5b4fc;
+      padding: .2rem .6rem;
+      border-radius: 4px;
+      font-size: .7rem;
+      margin-bottom: .75rem
+    }
+
+    .book-desc {
+      color: var(--text);
+      font-size: .85rem;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+      flex: 1
+    }
+
+    .book-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: .5rem
+    }
+
+    .book-rating {
+      color: #fbbf24;
+      font-size: .8rem
+    }
+
+    .book-link {
+      padding: .5rem 1rem;
+      border-radius: 6px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-size: .8rem;
+      font-weight: 600;
+      transition: all .2s
+    }
+
+    .book-link:hover {
+      background: #4f46e5
+    }
+
+    /* VIDEOS GRID */
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+      animation: fadeIn 0.4s ease-in-out
+    }
+
+    .video-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all .3s;
+      cursor: pointer
+    }
+
+    .video-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent)
+    }
+
+    .video-thumb {
+      height: 160px;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Dark overlay on hover */
+    .video-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      transition: background .25s;
+    }
+    .video-card:hover .video-thumb::after {
+      background: rgba(0,0,0,.35);
+    }
+
+    /* YouTube-style play button */
+    .yt-play-btn {
+      position: absolute;
+      z-index: 2;
+      width: 52px;
+      height: 36px;
+      background: #ff0000;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,.5);
+      transition: transform .25s, background .2s;
+    }
+    .yt-play-btn i {
+      color: #fff;
+      font-size: 1.3rem;
+      transition: none;
+    }
+    .video-card:hover .yt-play-btn {
+      transform: scale(1.12);
+      background: #cc0000;
+    }
+
+    .video-duration {
+      position: absolute;
+      bottom: .5rem;
+      right: .5rem;
+      background: rgba(0, 0, 0, .7);
+      color: #fff;
+      padding: .2rem .5rem;
+      border-radius: 4px;
+      font-size: .7rem
+    }
+
+    .video-info {
+      padding: 1rem
+    }
+
+    .video-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .95rem;
+      margin-bottom: .3rem
+    }
+
+    .video-channel {
+      color: var(--muted);
+      font-size: .8rem;
+      margin-bottom: .5rem;
+      display: flex;
+      align-items: center;
+      gap: .3rem
+    }
+
+    .video-channel i {
+      color: #ff0000;
+      font-size: .7rem
+    }
+
+    .video-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: .75rem
+    }
+
+    .video-category {
+      background: var(--card);
+      padding: .2rem .6rem;
+      border-radius: 4px;
+      font-size: .7rem;
+      color: var(--accent)
+    }
+
+    /* WEBSITES GRID */
+    .websites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+      animation: fadeIn 0.4s ease-in-out
+    }
+
+    .website-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      transition: all .3s;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column
+    }
+
+    .website-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent)
+    }
+
+    .website-header {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: .75rem
+    }
+
+    .website-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(99, 102, 241, .1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 1.1rem
+    }
+
+    .website-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem
+    }
+
+    .website-desc {
+      color: var(--muted);
+      font-size: .85rem;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+      flex: 1
+    }
+
+    .website-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: .8rem
+    }
+
+    .website-visit {
+      color: var(--accent);
+      font-weight: 600
+    }
+
+    .hamburger {
+      display: none;
+      position: fixed;
+      top: .9rem;
+      left: .9rem;
+      z-index: 400;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1.1rem;
+      transition: all .2s;
+      box-shadow: 0 2px 10px rgba(0,0,0,.15);
+    }
+    .hamburger:hover { border-color: var(--accent); color: var(--accent); }
+    .mob-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 199;
+      backdrop-filter: blur(3px);
+    }
+    .mob-overlay.open { display: block; }
+
+    @media(max-width:768px) {
+      .hamburger { display: flex; }
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform .3s cubic-bezier(.4,0,.2,1);
+        z-index: 200;
+        box-shadow: 4px 0 24px rgba(0,0,0,.25);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main {
+        margin-left: 0;
+        padding: 4.5rem 1.25rem 1.5rem;
+      }
+      .books-grid, .videos-grid, .websites-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <button class="hamburger" id="mobMenuBtn" onclick="window.toggleMobMenu()" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+  <div class="mob-overlay" id="mobOverlay" onclick="window.closeMobMenu()"></div>
+
+  <aside class="sidebar">
+    <a href="dashboard.html" class="s-logo"><i class="fa-solid fa-graduation-cap"></i> CareeZ</a>
+    <nav class="s-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="Careers.html"><i class="fa-solid fa-briefcase"></i> Careers</a>
+      <a href="roadmap.html"><i class="fa-solid fa-road"></i> Roadmaps</a>
+      <a href="Exams.html"><i class="fa-solid fa-file-lines"></i> Exams</a>
+      <a href="PYQs.html"><i class="fa-solid fa-book-open"></i> PYQs</a>
+      <a href="Resources.html" class="active"><i class="fa-solid fa-folder"></i> Resources</a>
+      <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+    </nav>
+
+    <div class="s-bottom">
+      <div class="s-theme" id="themeToggleBtn" onclick="window.toggleTheme()">
+        <i class="fa-solid fa-moon" id="themeIcon"></i> <span id="themeLabel">Dark Mode</span>
+      </div>
+      <div class="s-logout" onclick="window.logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <h1>Learning Resources</h1>
+      <p>Curated books, YouTube videos, and websites for every career</p>
+    </div>
+
+    <div class="resource-tabs">
+      <button class="tab-btn active" onclick="switchTab('books')" id="tab-books">📚 Books</button>
+      <button class="tab-btn" onclick="switchTab('videos')" id="tab-videos">▶️ Videos</button>
+      <button class="tab-btn" onclick="switchTab('websites')" id="tab-websites">🌐 Websites</button>
+    </div>
+
+    <div class="filter-section">
+      <select class="filter-select" id="categoryFilter" onchange="filterResources()">
+        <option value="all">All Categories</option>
+        <option value="UPSC">UPSC</option>
+        <option value="NEET">NEET</option>
+        <option value="JEE">JEE</option>
+        <option value="CA">CA</option>
+        <option value="BANKING">BANKING</option>
+        <option value="DEFENCE">DEFENCE</option>
+        <option value="UGCNET">UGCNET</option>
+      </select>
+    </div>
+
+    <!-- Books Section -->
+    <div id="books-section">
+      <div class="books-grid" id="booksGrid"></div>
+    </div>
+
+    <!-- Videos Section (hidden initially) -->
+    <div id="videos-section" style="display:none">
+      <div class="videos-grid" id="videosGrid"></div>
+    </div>
+
+    <!-- Websites Section (hidden initially) -->
+    <div id="websites-section" style="display:none">
+      <div class="websites-grid" id="websitesGrid"></div>
+    </div>
+
+    
+  </main>
+
+  <script type="module">
+    import { supabase, requireAuth, signOut } from './supabase-config.js';
+
+    // Theme init
+    (function() {
+      const t = localStorage.getItem('careez_theme') || 'dark';
+      if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    })();
+    window.toggleTheme = function() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('careez_theme','dark'); }
+      else { document.documentElement.setAttribute('data-theme','light'); localStorage.setItem('careez_theme','light'); }
+      _updateThemeBtn();
+    };
+    function _updateThemeBtn() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+      if (icon) icon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      if (label) label.textContent = isLight ? 'Light Mode' : 'Dark Mode';
+    }
+    _updateThemeBtn();
+
+    window.toggleMobMenu = function() {
+      document.querySelector('.sidebar').classList.toggle('open');
+      document.getElementById('mobOverlay').classList.toggle('open');
+    };
+    window.closeMobMenu = function() {
+      document.querySelector('.sidebar').classList.remove('open');
+      document.getElementById('mobOverlay').classList.remove('open');
+    };
+    document.querySelectorAll('.s-nav a').forEach(a => a.addEventListener('click', window.closeMobMenu));
+
+    let currentTab = 'books';
+
+    window.switchTab = function (tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('books-section').style.display = tab === 'books' ? 'block' : 'none';
+      document.getElementById('videos-section').style.display = tab === 'videos' ? 'block' : 'none';
+      document.getElementById('websites-section').style.display = tab === 'websites' ? 'block' : 'none';
+      
+      window.filterResources();
+    }
+
+    window.filterResources = async function () {
+      const category = document.getElementById('categoryFilter').value;
+      const tagMapping = { 'books': 'books', 'videos': 'video', 'websites': 'website' };
+      const selectedTag = tagMapping[currentTab];
+      
+      const gridId = currentTab + 'Grid';
+      const gridElem = document.getElementById(gridId);
+      gridElem.innerHTML = '<p style="padding: 2rem; color: var(--muted);">Loading data...</p>';
+
+      try {
+        let query = supabase.from('Resources').select('*').eq('tag', selectedTag);
+        if (category !== 'all') {
+          query = query.eq('category', category);
+        }
+        
+        const { data, error } = await query;
+        if (error) throw error;
+        
+        // Filter out effectively missing/invalid links, just in case
+        const validData = (data || []).filter(item => item.link_url && item.link_url !== 'INVALID');
+        
+
+        
+        if (validData.length === 0) {
+          gridElem.innerHTML = '<p style="padding: 2rem; color: var(--muted);">No data available</p>';
+          return;
+        }
+
+        if (currentTab === 'books') {
+          gridElem.innerHTML = validData.map(b => `
+            <div class="book-card">
+              <div class="book-icon"><i class="fa-solid fa-book"></i></div>
+              <div class="book-title">${b.title}</div>
+              <div class="book-author">${b.author ? 'by ' + b.author : ''}</div>
+              <span class="book-tag">${b.tag || 'books'}</span>
+              <div class="book-desc">${b.description || ''}</div>
+              <div class="book-footer">
+                <div class="book-rating">⭐ ${b.rating || '4.5'}</div>
+                <a href="${b.link_url}" class="book-link" target="_blank">View</a>
+              </div>
+            </div>
+          `).join('');
+        }
+        else if (currentTab === 'videos') {
+          // Helper: extract YouTube video ID from any YouTube URL
+          function getYTThumb(url) {
+            if (!url) return null;
+            // youtube.com/watch?v=ID
+            let m = url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+            if (m) return `https://img.youtube.com/vi/${m[1]}/mqdefault.jpg`;
+            // youtu.be/ID
+            m = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+            if (m) return `https://img.youtube.com/vi/${m[1]}/mqdefault.jpg`;
+            // youtube.com/embed/ID
+            m = url.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/);
+            if (m) return `https://img.youtube.com/vi/${m[1]}/mqdefault.jpg`;
+            return null;
+          }
+
+          gridElem.innerHTML = validData.map(v => {
+            // Normalise link
+            let finalLink = v.link_url;
+            if (finalLink.includes('google.com/search?q=')) {
+              finalLink = finalLink.replace('https://www.google.com/search?q=', 'https://www.youtube.com/results?search_query=');
+            }
+
+            // Extract YouTube video ID
+            function getYTId(url) {
+              if (!url) return null;
+              let m = url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+              if (m) return m[1];
+              m = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+              if (m) return m[1];
+              m = url.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/);
+              if (m) return m[1];
+              return null;
+            }
+            function getYTThumb(url) {
+              const id = getYTId(url);
+              return id ? `https://img.youtube.com/vi/${id}/mqdefault.jpg` : null;
+            }
+
+            const videoId = getYTId(finalLink) || getYTId(v.link_url);
+            const thumb = v.thumbnail_url || getYTThumb(finalLink) || getYTThumb(v.link_url);
+
+            const thumbStyle = thumb
+              ? `background:url('${thumb}') center/cover no-repeat; background-color:#000;`
+              : `background:linear-gradient(135deg,#1e293b,#0f172a);`;
+
+            // Safe title for JS attribute
+            const safeTitle = (v.title || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
+            if (videoId) {
+              // Has a real video ID → open embedded player in modal
+              return `
+              <div class="video-card" onclick="window.openVideoModal('${videoId}','${safeTitle}')" style="cursor:pointer;">
+                <div class="video-thumb" style="${thumbStyle}">
+                  <div class="yt-play-btn"><i class="fa-brands fa-youtube"></i></div>
+                </div>
+                <div class="video-info">
+                  <div class="video-title">${v.title}</div>
+                  <div class="video-channel"><i class="fa-solid fa-circle-user"></i> ${v.channel_name || 'YouTube'}</div>
+                  <div class="video-category">${v.category}</div>
+                </div>
+              </div>`;
+            } else {
+              // Search / playlist URL → open YouTube in new tab
+              return `
+              <a href="${finalLink}" class="video-card" target="_blank" style="text-decoration:none;color:inherit;">
+                <div class="video-thumb" style="${thumbStyle}">
+                  <div class="yt-play-btn"><i class="fa-brands fa-youtube"></i></div>
+                  <span style="position:absolute;bottom:.4rem;right:.5rem;background:rgba(0,0,0,.7);color:#fff;font-size:.65rem;padding:.15rem .4rem;border-radius:4px;">Opens YouTube</span>
+                </div>
+                <div class="video-info">
+                  <div class="video-title">${v.title}</div>
+                  <div class="video-channel"><i class="fa-solid fa-circle-user"></i> ${v.channel_name || 'YouTube'}</div>
+                  <div class="video-category">${v.category}</div>
+                </div>
+              </a>`;
+            }
+          }).join('');
+        }
+        else if (currentTab === 'websites') {
+          gridElem.innerHTML = validData.map(w => `
+            <a href="${w.link_url}" class="website-card" target="_blank">
+              <div class="website-header">
+                <div class="website-icon"><i class="fa-solid fa-globe"></i></div>
+                <div class="website-name">${w.title}</div>
+              </div>
+              <div class="website-desc">${w.description || ''}</div>
+              <div class="website-footer">
+                <span>🌟 Resource</span>
+                <span class="website-visit">Visit →</span>
+              </div>
+            </a>
+          `).join('');
+        }
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        gridElem.innerHTML = '<p style="padding: 2rem; color: #ef4444;">Error loading data.</p>';
+      }
+    }
+
+
+
+    window.openVideoModal = function(videoId, title) {
+      const modal = document.getElementById('videoModal');
+      document.getElementById('videoModalTitle').textContent = title;
+      document.getElementById('videoIframe').src =
+        `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&color=white`;
+      // Set "Open in YouTube" link
+      const ytLink = document.getElementById('videoYTLink');
+      if (ytLink) ytLink.href = `https://www.youtube.com/watch?v=${videoId}`;
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.closeVideoModal = function() {
+      document.getElementById('videoIframe').src = '';  // stops playback
+      document.getElementById('videoModal').style.display = 'none';
+      document.body.style.overflow = '';
+    };
+
+    // Close on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') window.closeVideoModal();
+    });
+
+    window.logout = async function () {
+      await signOut();
+      localStorage.removeItem('careez_logged_in');
+      window.location.href = 'login.html';
+    }
+
+    async function init() {
+      const authData = await requireAuth();
+      if (!authData) return;
+
+      // Check for filter from exams page
+      const filterExam = localStorage.getItem('filter_exam');
+      if (filterExam) {
+        const examMap = { 'UPSC': 'UPSC', 'NEET': 'NEET', 'JEE': 'JEE', 'CA': 'CA', 'SBI': 'BANKING', 'IBPS': 'BANKING', 'NDA': 'DEFENCE' };
+        const category = examMap[filterExam.split(' ')[0]] || 'all';
+        document.getElementById('categoryFilter').value = category;
+        localStorage.removeItem('filter_exam');
+      }
+
+      window.filterResources();
+
+    }
+
+    window.onload = init;
+  </script>
+
+  <!-- ===== VIDEO PLAYER MODAL ===== -->
+  <div id="videoModal"
+    style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:3000;
+           align-items:center;justify-content:center;padding:1.25rem;"
+    onclick="if(event.target===this)window.closeVideoModal()">
+    <div style="width:100%;max-width:940px;">
+
+      <!-- Modal top bar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;gap:1rem;">
+        <div id="videoModalTitle"
+          style="font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;
+                 color:#fff;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+        <div style="display:flex;gap:.5rem;flex-shrink:0;">
+          <a id="videoYTLink" href="#" target="_blank"
+            style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;
+                   height:36px;padding:0 .85rem;border-radius:8px;font-size:.8rem;font-weight:600;
+                   display:flex;align-items:center;gap:.4rem;text-decoration:none;cursor:pointer;
+                   transition:background .2s;">
+            <i class="fa-brands fa-youtube" style="color:#ff4444;"></i> YouTube
+          </a>
+          <button onclick="window.closeVideoModal()"
+            style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;
+                   width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1.1rem;
+                   display:flex;align-items:center;justify-content:center;transition:background .2s;">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 16:9 iframe player -->
+      <div style="position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;
+                  box-shadow:0 30px 60px rgba(0,0,0,.6);background:#000;">
+        <iframe id="videoIframe"
+          style="position:absolute;inset:0;width:100%;height:100%;border:none;"
+          src=""
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

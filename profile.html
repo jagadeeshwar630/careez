@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareeZ | My Profile</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #06080f;
+      --surface: #0d1117;
+      --card: #111827;
+      --border: rgba(99, 102, 241, .15);
+      --accent: #6366f1;
+      --success: #22c55e;
+      --text: #f1f5f9;
+      --muted: #64748b;
+      --sidebar: 260px
+    }
+
+    [data-theme="light"] {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --card: #f0f4ff;
+      --border: rgba(99, 102, 241, .15);
+      --text: #0f172a;
+      --muted: #64748b;
+    }
+
+    .s-theme {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .88rem;
+      transition: background .2s;
+      margin-bottom: .25rem;
+    }
+
+    .s-theme:hover {
+      background: var(--card);
+      color: var(--text);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh
+    }
+
+    .sidebar {
+      width: var(--sidebar);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      overflow-y: auto;
+      z-index: 50
+    }
+
+    .s-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: 2rem;
+      text-decoration: none
+    }
+
+    .s-logo i {
+      color: var(--accent)
+    }
+
+    .s-nav {
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+      flex: 1
+    }
+
+    .s-nav a {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .88rem;
+      transition: all .2s
+    }
+
+    .s-nav a:hover {
+      background: var(--card);
+      color: var(--text)
+    }
+
+    .s-nav a.active {
+      background: rgba(99, 102, 241, .12);
+      color: var(--accent);
+      border: 1px solid rgba(99, 102, 241, .2)
+    }
+
+    .s-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: auto
+    }
+
+    .s-logout {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #ef4444;
+      font-weight: 600;
+      font-size: .88rem;
+      cursor: pointer
+    }
+
+    .s-logout:hover {
+      background: rgba(239, 68, 68, .08)
+    }
+
+    .main {
+      flex: 1;
+      margin-left: var(--sidebar);
+      padding: 2.5rem 3rem;
+      max-width: 800px
+    }
+
+    .page-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: .3rem
+    }
+
+    .page-sub {
+      color: var(--muted);
+      font-size: .95rem;
+      margin-bottom: 2rem
+    }
+
+    .profile-hero {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #818cf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0
+    }
+
+    .prof-info h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: .3rem
+    }
+
+    .prof-info p {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-bottom: .5rem
+    }
+
+    .prof-career {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: rgba(99, 102, 241, .1);
+      border: 1px solid rgba(99, 102, 241, .2);
+      color: #a5b4fc;
+      padding: .3rem .85rem;
+      border-radius: 50px;
+      font-size: .8rem;
+      font-weight: 700
+    }
+
+    .edit-btn {
+      margin-left: auto;
+      padding: .65rem 1.25rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Manrope', sans-serif;
+      font-weight: 600;
+      font-size: .85rem;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: .4rem
+    }
+
+    .edit-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem
+    }
+
+    .ic-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .9rem;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem
+    }
+
+    .ic-title i {
+      color: var(--accent)
+    }
+
+    .info-rows {
+      display: flex;
+      flex-direction: column;
+      gap: .75rem
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .75rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: .9rem
+    }
+
+    .info-row:last-child {
+      border: none
+    }
+
+    .info-row span:first-child {
+      color: var(--muted)
+    }
+
+    .info-row span:last-child {
+      font-weight: 600
+    }
+
+    .danger-card {
+      background: rgba(239, 68, 68, .05);
+      border: 1px solid rgba(239, 68, 68, .15);
+      border-radius: 16px;
+      padding: 1.5rem
+    }
+
+    .danger-title {
+      font-size: .85rem;
+      font-weight: 700;
+      color: #ef4444;
+      margin-bottom: .75rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem
+    }
+
+    .danger-btn {
+      padding: .65rem 1.25rem;
+      border-radius: 8px;
+      border: 1px solid rgba(239, 68, 68, .3);
+      background: transparent;
+      color: #ef4444;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 600;
+      font-size: .85rem;
+      cursor: pointer;
+      transition: all .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem
+    }
+
+    .danger-btn:hover {
+      background: rgba(239, 68, 68, .1)
+    }
+
+    .hamburger {
+      display: none;
+      position: fixed;
+      top: .9rem;
+      left: .9rem;
+      z-index: 400;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1.1rem;
+      transition: all .2s;
+      box-shadow: 0 2px 10px rgba(0,0,0,.15);
+    }
+    .hamburger:hover { border-color: var(--accent); color: var(--accent); }
+    .mob-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 199;
+      backdrop-filter: blur(3px);
+    }
+    .mob-overlay.open { display: block; }
+
+    @media(max-width:768px) {
+      .hamburger { display: flex; }
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform .3s cubic-bezier(.4,0,.2,1);
+        z-index: 200;
+        box-shadow: 4px 0 24px rgba(0,0,0,.25);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main {
+        margin-left: 0;
+        padding: 4.5rem 1.25rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <button class="hamburger" id="mobMenuBtn" onclick="window.toggleMobMenu()" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+  <div class="mob-overlay" id="mobOverlay" onclick="window.closeMobMenu()"></div>
+
+  <aside class="sidebar">
+    <a href="dashboard.html" class="s-logo"><i class="fa-solid fa-graduation-cap"></i> CareeZ</a>
+    <nav class="s-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="Careers.html"><i class="fa-solid fa-briefcase"></i> Careers</a>
+      <a href="roadmap.html"><i class="fa-solid fa-road"></i> Roadmaps</a>
+      <a href="Exams.html"><i class="fa-solid fa-file-lines"></i> Exams</a>
+      <a href="PYQs.html"><i class="fa-solid fa-book-open"></i> PYQs</a>
+      <a href="Resources.html"><i class="fa-solid fa-folder"></i> Resources</a>
+      <a href="profile.html" class="active"><i class="fa-solid fa-user"></i> Profile</a>
+    </nav>
+
+    <div class="s-bottom">
+      <div class="s-theme" id="themeToggleBtn" onclick="window.toggleTheme()">
+        <i class="fa-solid fa-moon" id="themeIcon"></i> <span id="themeLabel">Dark Mode</span>
+      </div>
+      <div class="s-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-title">My Profile</div>
+    <div class="page-sub">Manage your account details and career settings</div>
+
+    <div class="profile-hero">
+      <div class="avatar" id="avatarInitial">?</div>
+      <div class="prof-info">
+        <h2 id="profName">Loading...</h2>
+        <p id="profEmail">—</p>
+        <div class="prof-career" id="profCareer">No career selected</div>
+      </div>
+      <button class="edit-btn" onclick="window.location.href='student_details.html'"><i class="fa-solid fa-pen"></i>
+        Edit Profile</button>
+    </div>
+
+    <div class="info-card">
+      <div class="ic-title"><i class="fa-solid fa-graduation-cap"></i> Education & Career Details</div>
+      <div class="info-rows">
+        <div class="info-row"><span>Career Goal</span><span id="iCareer">—</span></div>
+        <div class="info-row"><span>Education Level</span><span id="iEdu">—</span></div>
+        <div class="info-row"><span>Stream / Branch</span><span id="iStream">—</span></div>
+        <div class="info-row"><span>Degree Type</span><span id="iDeg">—</span></div>
+        <div class="info-row"><span>Exam Status</span><span id="iExam">—</span></div>
+        <div class="info-row"><span>Study Hours/Day</span><span id="iStudy">—</span></div>
+        <div class="info-row"><span>Profile Created</span><span id="iDate">—</span></div>
+      </div>
+    </div>
+
+    <div class="danger-card">
+      <div class="danger-title"><i class="fa-solid fa-triangle-exclamation"></i> Danger Zone</div>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:1rem">Resetting your profile will clear all your
+        career data and roadmap progress.</p>
+      <button class="danger-btn" onclick="resetProfile()"><i class="fa-solid fa-rotate-left"></i> Reset Profile &
+        Roadmap</button>
+    </div>
+  </main>
+
+  <script type="module">
+    import { supabase, requireAuth, signOut } from './supabase-config.js';
+
+    // Theme init
+    (function() {
+      const t = localStorage.getItem('careez_theme') || 'dark';
+      if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    })();
+    window.toggleTheme = function() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('careez_theme','dark'); }
+      else { document.documentElement.setAttribute('data-theme','light'); localStorage.setItem('careez_theme','light'); }
+      _updateThemeBtn();
+    };
+    function _updateThemeBtn() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+      if (icon) icon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      if (label) label.textContent = isLight ? 'Light Mode' : 'Dark Mode';
+    }
+    _updateThemeBtn();
+
+    // Mobile sidebar
+    window.toggleMobMenu = function() {
+      document.querySelector('.sidebar').classList.toggle('open');
+      document.getElementById('mobOverlay').classList.toggle('open');
+    };
+    window.closeMobMenu = function() {
+      document.querySelector('.sidebar').classList.remove('open');
+      document.getElementById('mobOverlay').classList.remove('open');
+    };
+    document.querySelectorAll('.s-nav a').forEach(a => a.addEventListener('click', window.closeMobMenu));
+
+    const EDU_LABELS = { "class10": "Class 10", "class11-12": "Class 11–12 (Intermediate)", "graduation": "Graduation (Pursuing)", "grad-complete": "Graduation Completed", "pg": "Post-Graduation" };
+    const EXAM_LABELS = { "not-started": "Not started", "preparing": "Currently preparing", "attempted": "Attempted – not qualified", "qualified": "Qualified / Cleared" };
+
+    let currentUser = null;
+
+    async function init() {
+      const authData = await requireAuth();
+      if (!authData) return;
+
+      currentUser = authData.user;
+      const name = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'User';
+      const email = currentUser.email;
+
+      const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('avatarInitial').textContent = initials;
+      document.getElementById('profName').textContent = name;
+      document.getElementById('profEmail').textContent = email || 'Email not set';
+
+      // Fetch Profile
+      const { data: profile, error } = await supabase.from('Profile').select('*').eq('id', currentUser.id).single();
+
+      if (error || !profile) {
+        // No profile found, defaults
+        document.getElementById('profCareer').textContent = 'No career selected';
+        return;
+      }
+
+      document.getElementById('profCareer').textContent = profile.career || 'No career selected';
+      document.getElementById('iCareer').textContent = profile.career || '—';
+      document.getElementById('iEdu').textContent = EDU_LABELS[profile.edu_level] || '—';
+      document.getElementById('iStream').textContent = profile.stream || '—';
+      document.getElementById('iDeg').textContent = profile.grad_type || '—';
+      document.getElementById('iExam').textContent = EXAM_LABELS[profile.exam_status] || '—';
+      document.getElementById('iStudy').textContent = profile.study_hours ? profile.study_hours + (profile.study_hours.includes('-') ? ' hrs' : '') : '—';
+      document.getElementById('iDate').textContent = profile.created_at ? new Date(profile.created_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }) : '—';
+    }
+
+    window.resetProfile = async function () {
+      if (confirm('This will clear your career selection and all roadmap progress. Are you sure?')) {
+        localStorage.removeItem('careez_profile');
+        localStorage.removeItem('careez_completions');
+
+        if (currentUser) {
+          // Delete progress from Supabase
+          await supabase.from('Roadmap').delete().eq('user_id', currentUser.id);
+          // Clear career from profile
+          await supabase.from('Profile').update({ career: null }).eq('id', currentUser.id);
+        }
+
+        window.location.href = 'student_details.html';
+      }
+    }
+
+    window.logout = async function () {
+      await signOut();
+      localStorage.removeItem('careez_logged_in');
+      window.location.href = 'login.html';
+    }
+
+    window.onload = init;
+  </script>
+</body>
+
+</html>

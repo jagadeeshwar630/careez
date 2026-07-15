@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareeZ | Exams</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #06080f;
+      --surface: #0d1117;
+      --card: #111827;
+      --border: rgba(99, 102, 241, .15);
+      --accent: #6366f1;
+      --accent2: #f97316;
+      --text: #f1f5f9;
+      --muted: #64748b;
+      --sidebar: 260px
+    }
+
+    [data-theme="light"] {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --card: #f0f4ff;
+      --border: rgba(99, 102, 241, .15);
+      --text: #0f172a;
+      --muted: #64748b;
+    }
+
+    [data-theme="light"] .stage-tag { background: #e2e8f0; }
+    [data-theme="light"] .syllabus-tag { color: #4f46e5; }
+
+    .s-theme {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .88rem;
+      transition: background .2s;
+      margin-bottom: .25rem;
+    }
+
+    .s-theme:hover {
+      background: var(--card);
+      color: var(--text);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh
+    }
+
+    .sidebar {
+      width: var(--sidebar);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      overflow-y: auto;
+      z-index: 50
+    }
+
+    .s-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: 2rem;
+      text-decoration: none
+    }
+
+    .s-logo i {
+      color: var(--accent)
+    }
+
+    .s-nav {
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+      flex: 1
+    }
+
+    .s-nav a {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .88rem;
+      transition: all .2s
+    }
+
+    .s-nav a:hover {
+      background: var(--card);
+      color: var(--text)
+    }
+
+    .s-nav a.active {
+      background: rgba(99, 102, 241, .12);
+      color: var(--accent);
+      border: 1px solid rgba(99, 102, 241, .2)
+    }
+
+    .s-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: auto
+    }
+
+    .s-logout {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #ef4444;
+      font-weight: 600;
+      font-size: .88rem;
+      cursor: pointer
+    }
+
+    .s-logout:hover {
+      background: rgba(239, 68, 68, .08)
+    }
+
+    .main {
+      flex: 1;
+      margin-left: var(--sidebar);
+      padding: 2.5rem 3rem
+    }
+
+    .page-header {
+      margin-bottom: 2rem
+    }
+
+    .page-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: .3rem
+    }
+
+    .page-header p {
+      color: var(--muted);
+      font-size: .95rem
+    }
+
+    .exam-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem
+    }
+
+    .exam-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all .3s
+    }
+
+    .exam-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent)
+    }
+
+    .exam-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center
+    }
+
+    .exam-header h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem
+    }
+
+    .exam-header i {
+      color: var(--muted);
+      transition: transform .3s
+    }
+
+    .exam-header.open i {
+      transform: rotate(180deg)
+    }
+
+    .exam-body {
+      display: none;
+      padding: 1.5rem
+    }
+
+    .exam-body.open {
+      display: block
+    }
+
+    .exam-detail {
+      margin-bottom: 1.25rem
+    }
+
+    .exam-detail .label {
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: .3rem
+    }
+
+    .exam-detail .value {
+      font-size: .95rem;
+      line-height: 1.5
+    }
+
+    .exam-stages {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin: .75rem 0
+    }
+
+    .stage-tag {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: .3rem .8rem;
+      border-radius: 50px;
+      font-size: .75rem;
+      font-weight: 600
+    }
+
+    .syllabus-tag {
+      background: rgba(99, 102, 241, .08);
+      border: 1px solid rgba(99, 102, 241, .2);
+      color: #a5b4fc;
+      padding: .25rem .6rem;
+      border-radius: 4px;
+      font-size: .7rem;
+      display: inline-block;
+      margin: .2rem
+    }
+
+    .exam-footer {
+      margin-top: 1rem;
+      display: flex;
+      gap: .75rem
+    }
+
+    .exam-btn {
+      flex: 1;
+      text-align: center;
+      padding: .7rem;
+      border-radius: 8px;
+      font-size: .8rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all .2s
+    }
+
+    .exam-btn.primary {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .exam-btn.primary:hover {
+      background: #4f46e5
+    }
+
+    .exam-btn.secondary {
+      border: 1px solid var(--border);
+      color: var(--muted)
+    }
+
+    .exam-btn.secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    .hamburger {
+      display: none;
+      position: fixed;
+      top: .9rem;
+      left: .9rem;
+      z-index: 400;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1.1rem;
+      transition: all .2s;
+      box-shadow: 0 2px 10px rgba(0,0,0,.15);
+    }
+    .hamburger:hover { border-color: var(--accent); color: var(--accent); }
+    .mob-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 199;
+      backdrop-filter: blur(3px);
+    }
+    .mob-overlay.open { display: block; }
+
+    @media(max-width:768px) {
+      .hamburger { display: flex; }
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform .3s cubic-bezier(.4,0,.2,1);
+        z-index: 200;
+        box-shadow: 4px 0 24px rgba(0,0,0,.25);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main {
+        margin-left: 0;
+        padding: 4.5rem 1.25rem 1.5rem;
+      }
+      .exam-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <button class="hamburger" id="mobMenuBtn" onclick="window.toggleMobMenu()" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+  <div class="mob-overlay" id="mobOverlay" onclick="window.closeMobMenu()"></div>
+
+  <aside class="sidebar">
+    <a href="dashboard.html" class="s-logo"><i class="fa-solid fa-graduation-cap"></i> CareeZ</a>
+    <nav class="s-nav">
+      <a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="Careers.html"><i class="fa-solid fa-briefcase"></i> Careers</a>
+      <a href="roadmap.html"><i class="fa-solid fa-road"></i> Roadmaps</a>
+      <a href="Exams.html" class="active"><i class="fa-solid fa-file-lines"></i> Exams</a>
+      <a href="PYQs.html"><i class="fa-solid fa-book-open"></i> PYQs</a>
+      <a href="Resources.html"><i class="fa-solid fa-folder"></i> Resources</a>
+      <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+    </nav>
+
+    <div class="s-bottom">
+      <div class="s-theme" id="themeToggleBtn" onclick="window.toggleTheme()">
+        <i class="fa-solid fa-moon" id="themeIcon"></i> <span id="themeLabel">Dark Mode</span>
+      </div>
+      <div class="s-logout" onclick="window.logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <h1>Exam Guides</h1>
+      <p>Complete details for all major entrance and recruitment exams</p>
+    </div>
+
+    <div class="exam-grid" id="examGrid"></div>
+  </main>
+
+  <script type="module">
+    import { supabase, requireAuth, signOut } from './supabase-config.js';
+
+    // Theme init
+    (function() {
+      const t = localStorage.getItem('careez_theme') || 'dark';
+      if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    })();
+    window.toggleTheme = function() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('careez_theme','dark'); }
+      else { document.documentElement.setAttribute('data-theme','light'); localStorage.setItem('careez_theme','light'); }
+      _updateThemeBtn();
+    };
+    function _updateThemeBtn() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+      if (icon) icon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      if (label) label.textContent = isLight ? 'Light Mode' : 'Dark Mode';
+    }
+    _updateThemeBtn();
+
+    let exams = [];
+
+    async function fetchExams() {
+      const { data, error } = await supabase.from('Exams').select('*');
+      if (error) {
+        console.error('Error fetching exams:', error);
+        return;
+      }
+      exams = (!data || data.length === 0) ? oldExams : data;
+      renderExams();
+    }
+
+    const oldExams = [
+      {
+        id: 'upsc-cse',
+        name: 'UPSC Civil Services Exam (CSE)',
+        icon: '🏛️',
+        eligibility: 'Any Graduate, Age 21–32 (Gen)',
+        mode: 'Offline Pen & Paper',
+        frequency: 'Annual (Notification: Feb, Prelims: June, Mains: Oct)',
+        stages: ['Prelims (MCQ)', 'Mains (9 Papers)', 'Personality Test (Interview)'],
+        totalMarks: '2025 (Prelims: 400, Mains: 1750, Interview: 275)',
+        syllabus: ['History', 'Geography', 'Polity', 'Economy', 'Science & Tech', 'Environment', 'Ethics', 'Current Affairs'],
+        careers: ['IAS', 'IPS', 'IFS', 'IRS', 'IAAS'],
+        website: 'upsc.gov.in',
+        passing: 'Merit-based rank list',
+        negativeMarking: 'Yes (-0.67 per wrong in Prelims)'
+      },
+      {
+        id: 'neet-ug',
+        name: 'NEET UG',
+        icon: '⚕️',
+        eligibility: 'Class 12 PCB, 17+ years, min 50% in PCB (Gen)',
+        mode: 'Offline (OMR)',
+        frequency: 'Annual — May',
+        stages: ['Single Paper (Physics+Chemistry+Biology)'],
+        totalMarks: '720 (Physics: 180, Chemistry: 180, Biology: 360)',
+        syllabus: ['Physics', 'Chemistry', 'Botany', 'Zoology'],
+        careers: ['MBBS', 'BDS', 'AYUSH', 'Veterinary'],
+        website: 'nta.ac.in',
+        passing: 'Percentile-based cutoff',
+        negativeMarking: 'Yes (-1 per wrong)'
+      },
+      {
+        id: 'jee-main',
+        name: 'JEE Main',
+        icon: '🔧',
+        eligibility: 'Class 12 PCM, max 3 attempts',
+        mode: 'CBT Online',
+        frequency: 'January & April Sessions',
+        stages: ['Paper 1 (B.E./B.Tech)', 'Paper 2A (B.Arch)', 'Paper 2B (B.Planning)'],
+        totalMarks: '300 (Paper 1)',
+        syllabus: ['Physics', 'Chemistry', 'Mathematics'],
+        careers: ['B.Tech', 'B.E.', 'B.Arch', 'B.Planning'],
+        website: 'jeemain.nta.nic.in',
+        passing: 'Top 2.5 lakh qualify for JEE Advanced',
+        negativeMarking: 'Yes (-1 per wrong)'
+      },
+      {
+        id: 'ca-foundation',
+        name: 'CA Foundation',
+        icon: '📊',
+        eligibility: 'Class 12 passed (any stream)',
+        mode: 'Offline Written',
+        frequency: 'May & November',
+        stages: ['Foundation (4 papers)', 'Intermediate (6 papers)', 'Final (8 papers)'],
+        totalMarks: '400 (Foundation)',
+        syllabus: ['Accounting', 'Business Laws', 'Business Mathematics', 'Business Economics'],
+        careers: ['Chartered Accountant'],
+        website: 'icai.org',
+        passing: '40% per paper, 50% aggregate',
+        negativeMarking: 'No (MCQ papers have no negative marks)'
+      },
+      {
+        id: 'sbi-po',
+        name: 'SBI PO',
+        icon: '🏦',
+        eligibility: 'Any Graduate, 21–30 years',
+        mode: 'CBT Online',
+        frequency: 'Annual',
+        stages: ['Prelims', 'Mains', 'GD & Interview'],
+        totalMarks: 'Prelims: 100, Mains: 250, GD: 20, Interview: 30',
+        syllabus: ['Quantitative Aptitude', 'Reasoning', 'English', 'General Awareness', 'Banking Knowledge'],
+        careers: ['Bank PO'],
+        website: 'sbi.co.in/careers',
+        passing: 'Merit-based',
+        negativeMarking: 'Yes (-0.25 per wrong)'
+      },
+      {
+        id: 'nda',
+        name: 'NDA & NA',
+        icon: '⚔️',
+        eligibility: 'Class 12 (PCM for AF/Navy, any for Army), 16.5–19.5 years',
+        mode: 'Offline MCQ + SSB',
+        frequency: '2 times per year (April & September)',
+        stages: ['Written (Maths + GAT)', 'SSB Interview (5 days)'],
+        totalMarks: '900 (Maths: 300, GAT: 600)',
+        syllabus: ['Mathematics', 'English', 'General Knowledge', 'Physics', 'Chemistry', 'History', 'Geography'],
+        careers: ['Indian Army', 'Indian Navy', 'Indian Air Force'],
+        website: 'upsc.gov.in',
+        passing: 'Merit + SSB recommendation',
+        negativeMarking: 'Yes (-0.83 for Maths, -0.33 for GAT)'
+      },
+      {
+        id: 'ugc-net',
+        name: 'UGC NET',
+        icon: '🎓',
+        eligibility: 'Postgraduate (55% marks), No age limit for JRF?',
+        mode: 'CBT Online',
+        frequency: '2 times per year (June & December)',
+        stages: ['Paper 1 (Teaching Aptitude)', 'Paper 2 (Subject)'],
+        totalMarks: '300 (Paper 1: 100, Paper 2: 200)',
+        syllabus: ['Teaching Aptitude', 'Research', 'Communication', 'Subject-specific'],
+        careers: ['Assistant Professor', 'JRF', 'Lecturer'],
+        website: 'ugcnet.nta.nic.in',
+        passing: 'Minimum 40% (Gen), 35% (Reserved)',
+        negativeMarking: 'No'
+      },
+      {
+        id: 'clat',
+        name: 'CLAT (Law)',
+        icon: '⚖️',
+        eligibility: 'Class 12 (UG), LLB (PG), 45% marks',
+        mode: 'Offline MCQ',
+        frequency: 'Annual (December/May)',
+        stages: ['Single Paper'],
+        totalMarks: '150 (UG), 120 (PG)',
+        syllabus: ['English', 'Current Affairs', 'Legal Reasoning', 'Logical Reasoning', 'Mathematics'],
+        careers: ['BA LLB', 'LLB', 'LLM'],
+        website: 'consortiumofnlus.ac.in',
+        passing: 'Merit-based',
+        negativeMarking: 'Yes (-0.25 per wrong)'
+      }
+    ];
+
+    function renderExams() {
+      const grid = document.getElementById('examGrid');
+      if (!grid) return;
+      grid.innerHTML = exams.map(exam => `
+    <div class="exam-card">
+      <div class="exam-header" onclick="window.toggleExam('${exam.id}')">
+        <div style="display:flex;align-items:center;gap:.5rem">
+          <span style="font-size:1.2rem">${exam.icon || '📝'}</span>
+          <h3>${exam.name}</h3>
+        </div>
+        <i class="fa-solid fa-chevron-down" id="icon-${exam.id}"></i>
+      </div>
+      <div class="exam-body" id="body-${exam.id}">
+        <div class="exam-detail">
+          <div class="label">Eligibility</div>
+          <div class="value">${exam.eligibility || 'N/A'}</div>
+        </div>
+        <div class="exam-detail">
+          <div class="label">Exam Mode</div>
+          <div class="value">${exam.mode || 'N/A'} | ${exam.frequency || 'N/A'}</div>
+        </div>
+        <div class="exam-detail">
+          <div class="label">Exam Stages</div>
+          <div class="exam-stages">
+            ${(exam.stages || []).map(s => `<span class="stage-tag">${s}</span>`).join('')}
+          </div>
+        </div>
+        <div class="exam-detail">
+          <div class="label">Syllabus</div>
+          <div>
+            ${(exam.syllabus || []).map(s => `<span class="syllabus-tag">${s}</span>`).join('')}
+          </div>
+        </div>
+        <div class="exam-detail">
+          <div class="label">Total Marks</div>
+          <div class="value">${exam.totalMarks || exam.total_marks || 'N/A'}</div>
+        </div>
+        <div class="exam-detail">
+          <div class="label">Negative Marking</div>
+          <div class="value">${exam.negativeMarking || exam.negative_marking || 'N/A'}</div>
+        </div>
+        <div class="exam-detail">
+          <div class="label">Careers</div>
+          <div class="value">${(exam.careers || []).join(' • ') || 'N/A'}</div>
+        </div>
+        <div class="exam-footer">
+          <a href="javascript:void(0)" class="exam-btn primary" onclick="event.preventDefault(); window.viewPYQs('${exam.id}')">📚 View PYQs</a>
+          <a href="javascript:void(0)" class="exam-btn secondary" onclick="event.preventDefault(); window.viewResources('${exam.id}')">📹 Resources</a>
+        </div>
+      </div>
+    </div>
+  `).join('');
+    }
+
+
+    window.toggleExam = function (id) {
+      const body = document.getElementById('body-' + id);
+      const icon = document.getElementById('icon-' + id);
+      body.classList.toggle('open');
+      icon.classList.toggle('open');
+    }
+
+    window.viewPYQs = function (examName) {
+      localStorage.setItem('filter_exam', examName);
+      window.location.href = 'PYQs.html';
+    }
+
+    window.viewResources = function (examName) {
+      localStorage.setItem('filter_exam', examName);
+      window.location.href = 'Resources.html';
+    }
+
+    window.toggleMobMenu = function() {
+      document.querySelector('.sidebar').classList.toggle('open');
+      document.getElementById('mobOverlay').classList.toggle('open');
+    };
+    window.closeMobMenu = function() {
+      document.querySelector('.sidebar').classList.remove('open');
+      document.getElementById('mobOverlay').classList.remove('open');
+    };
+    document.querySelectorAll('.s-nav a').forEach(a => a.addEventListener('click', window.closeMobMenu));
+
+    window.logout = async function () {
+      await signOut();
+      localStorage.removeItem('careez_logged_in');
+      window.location.href = 'login.html';
+    }
+
+    async function init() {
+      const authData = await requireAuth();
+      if (!authData) return;
+      fetchExams();
+    }
+
+    window.onload = init;
+
+  </script>
+</body>
+
+</html>

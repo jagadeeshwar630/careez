@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareeZ | Dashboard</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #06080f;
+      --surface: #0d1117;
+      --card: #111827;
+      --border: rgba(99, 102, 241, .15);
+      --accent: #6366f1;
+      --accent2: #f97316;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --text: #f1f5f9;
+      --muted: #64748b;
+      --sidebar: 260px
+    }
+
+    [data-theme="light"] {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --card: #f0f4ff;
+      --border: rgba(99, 102, 241, .15);
+      --text: #0f172a;
+      --muted: #64748b;
+    }
+
+    [data-theme="light"] .tip-text { color: rgba(15, 23, 42, 0.85); }
+    [data-theme="light"] .tip-card { background: rgba(245,158,11,.07); }
+    [data-theme="light"] .msb-locked { background: #e2e8f0; color: #64748b; }
+    [data-theme="light"] .mini-stage { background: #f8fafc; }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh
+    }
+
+    .sidebar {
+      width: var(--sidebar);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      overflow-y: auto;
+      z-index: 50
+    }
+
+    .s-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: 2rem;
+      text-decoration: none
+    }
+
+    .s-logo i {
+      color: var(--accent)
+    }
+
+    .s-user {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1.5rem
+    }
+
+    .s-user-name {
+      font-weight: 700;
+      font-size: .95rem;
+      margin-bottom: .2rem
+    }
+
+    .s-user-career {
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 600
+    }
+
+    .s-nav {
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+      flex: 1
+    }
+
+    .s-nav a {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .88rem;
+      transition: all .2s
+    }
+
+    .s-nav a:hover {
+      background: var(--card);
+      color: var(--text)
+    }
+
+    .s-nav a.active {
+      background: rgba(99, 102, 241, .12);
+      color: var(--accent);
+      border: 1px solid rgba(99, 102, 241, .2)
+    }
+
+    .s-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: auto
+    }
+
+    .s-logout {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #ef4444;
+      font-weight: 600;
+      font-size: .88rem;
+      transition: background .2s
+    }
+
+    .s-logout:hover {
+      background: rgba(239, 68, 68, .08)
+    }
+
+    .s-theme {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .88rem;
+      transition: background .2s;
+      margin-bottom: .25rem
+    }
+
+    .s-theme:hover {
+      background: var(--card);
+      color: var(--text)
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      margin-left: var(--sidebar);
+      padding: 2.5rem 3rem
+    }
+
+    /* GREETING */
+    .greeting {
+      margin-bottom: 2rem
+    }
+
+    .greeting h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: .3rem
+    }
+
+    .greeting p {
+      color: var(--muted);
+      font-size: .95rem
+    }
+
+    /* STATS ROW */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: .5rem
+    }
+
+    .stat-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: .2rem
+    }
+
+    .stat-sub {
+      color: var(--muted);
+      font-size: .78rem
+    }
+
+    /* MAIN GRID */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem
+    }
+
+    @media(max-width:1100px) {
+      .main-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center
+    }
+
+    .section-link {
+      font-size: .82rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600
+    }
+
+    /* ROADMAP CARD */
+    .roadmap-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem
+    }
+
+    .prog-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      margin: 1rem 0
+    }
+
+    .prog-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #818cf8);
+      border-radius: 3px;
+      transition: width .8s ease
+    }
+
+    .mini-stages {
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      margin-top: .75rem
+    }
+
+    .mini-stage {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem;
+      background: var(--card);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: .85rem
+    }
+
+    .ms-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0
+    }
+
+    .ms-done {
+      background: var(--success)
+    }
+
+    .ms-active {
+      background: var(--accent)
+    }
+
+    .ms-locked {
+      background: var(--muted)
+    }
+
+    .ms-text {
+      flex: 1;
+      font-weight: 500
+    }
+
+    .ms-badge {
+      font-size: .72rem;
+      font-weight: 700;
+      padding: .2rem .6rem;
+      border-radius: 50px
+    }
+
+    .msb-done {
+      background: rgba(34, 197, 94, .12);
+      color: var(--success)
+    }
+
+    .msb-active {
+      background: rgba(99, 102, 241, .12);
+      color: #a5b4fc
+    }
+
+    .msb-locked {
+      background: var(--card);
+      color: var(--muted)
+    }
+
+    /* SIDEBAR CARDS */
+    .side-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .85rem 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: .88rem;
+      font-weight: 600;
+      transition: all .2s;
+      margin-bottom: .6rem
+    }
+
+    .action-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    .action-btn i {
+      color: var(--accent);
+      width: 16px
+    }
+
+    .action-btn.primary-action {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff
+    }
+
+    .action-btn.primary-action i {
+      color: #fff
+    }
+
+    .action-btn.primary-action:hover {
+      background: #4f46e5
+    }
+
+    /* TIPS */
+    .tip-card {
+      background: rgba(245, 158, 11, .05);
+      border: 1px solid rgba(245, 158, 11, .2);
+      border-radius: 14px;
+      padding: 1.25rem
+    }
+
+    .tip-head {
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--warning);
+      margin-bottom: .75rem
+    }
+
+    .tip-text {
+      font-size: .85rem;
+      color: rgba(241, 245, 249, .8);
+      line-height: 1.6
+    }
+
+    /* ── MOBILE NAV ─────────────────────────── */
+    .hamburger {
+      display: none;
+      position: fixed;
+      top: .9rem;
+      left: .9rem;
+      z-index: 400;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1.1rem;
+      transition: all .2s;
+      box-shadow: 0 2px 10px rgba(0,0,0,.15);
+    }
+    .hamburger:hover { border-color: var(--accent); color: var(--accent); }
+
+    .mob-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 199;
+      backdrop-filter: blur(3px);
+    }
+    .mob-overlay.open { display: block; }
+
+    @media(max-width:768px) {
+      .hamburger { display: flex; }
+
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform .3s cubic-bezier(.4,0,.2,1);
+        z-index: 200;
+        box-shadow: 4px 0 24px rgba(0,0,0,.25);
+      }
+      .sidebar.open { transform: translateX(0); }
+
+      .main {
+        margin-left: 0;
+        padding: 4.5rem 1.25rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<button class="hamburger" id="mobMenuBtn" onclick="window.toggleMobMenu()" aria-label="Open menu">
+  <i class="fa-solid fa-bars"></i>
+</button>
+<div class="mob-overlay" id="mobOverlay" onclick="window.closeMobMenu()"></div>
+
+  <aside class="sidebar">
+    <a href="dashboard.html" class="s-logo"><i class="fa-solid fa-graduation-cap"></i> CareeZ</a>
+    <div class="s-user">
+      <div class="s-user-name" id="sName">Student</div>
+      <div class="s-user-career" id="sCareer">No career selected</div>
+    </div>
+    <nav class="s-nav">
+      <a href="dashboard.html" class="active"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="Careers.html"><i class="fa-solid fa-briefcase"></i> Careers</a>
+      <a href="roadmap.html"><i class="fa-solid fa-road"></i> Roadmaps</a>
+      <a href="Exams.html"><i class="fa-solid fa-file-lines"></i> Exams</a>
+      <a href="PYQs.html"><i class="fa-solid fa-book-open"></i> PYQs</a>
+      <a href="Resources.html"><i class="fa-solid fa-folder"></i> Resources</a>
+      <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+    </nav>
+
+    <div class="s-bottom">
+      <div class="s-theme" id="themeToggleBtn" onclick="window.toggleTheme()">
+        <i class="fa-solid fa-moon" id="themeIcon"></i> <span id="themeLabel">Dark Mode</span>
+      </div>
+      <div class="s-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="greeting">
+      <h1 id="greetMsg">Good Morning! 👋</h1>
+      <p>Here's your career progress at a glance.</p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Career Goal</div>
+        <div class="stat-value" id="statCareer" style="font-size:1.1rem;margin-top:.3rem">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Progress</div>
+        <div class="stat-value" id="statPct" style="color:var(--success)">0%</div>
+        <div class="stat-sub">stages completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Current Stage</div>
+        <div class="stat-value" id="statStage" style="font-size:1rem;margin-top:.3rem">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Study Hours/Day</div>
+        <div class="stat-value" id="statStudy" style="color:var(--accent)">—</div>
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <div>
+        <div class="roadmap-card">
+          <div class="section-title">My Roadmap <a href="roadmap.html" class="section-link">View Full →</a></div>
+          <div class="prog-bar">
+            <div class="prog-fill" id="progFill" style="width:0%"></div>
+          </div>
+          <div id="stagePreview" class="mini-stages"></div>
+          <div style="margin-top:1rem;text-align:center">
+            <a href="roadmap.html"
+              style="display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#fff;padding:.7rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:.88rem">
+              <i class="fa-solid fa-road"></i> Continue My Roadmap
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="side-card">
+          <div class="section-title">Quick Actions</div>
+          <a href="roadmap.html" class="action-btn primary-action"><i class="fa-solid fa-road"></i> Continue Roadmap</a>
+          <a href="PYQS.html" class="action-btn"><i class="fa-solid fa-book-open"></i> Practice PYQs</a>
+          <a href="Resources.html" class="action-btn"><i class="fa-solid fa-video"></i> Watch Resources</a>
+          <a href="student_details.html" class="action-btn"><i class="fa-solid fa-pen"></i> Update Profile</a>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-head">💡 Today's Tip</div>
+          <div class="tip-text" id="dailyTip">Loading tip...</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { supabase, requireAuth, signOut } from './supabase-config.js';
+
+    const TIPS = [
+      "Consistency beats intensity. 4 hours of daily study for a year > 12 hours for a month.",
+      "Solve one PYQ paper every week. Past papers are the best predictor of future exam questions.",
+      "Make revision notes in your own words — rewriting helps retain information 3x better.",
+      "Don't compare your progress to others. Your roadmap is based on YOUR starting point.",
+      "Focus on understanding, not memorizing. Understanding lasts forever; memorization fades.",
+      "Join a study group for accountability — you're 2x more likely to stick to your goals.",
+      "Take one day off per week completely. Rest prevents burnout and improves retention.",
+      "Set a specific goal for each study session. 'Study 2 hours' < 'Finish Chapter 4 of Laxmikanth'.",
+    ];
+
+    const EDU_STAGE_MAP = { "class10": 1, "class11-12": 2, "graduation": 3, "grad-complete": 4, "pg": 5 };
+    const CAREER_DATA_LITE = {
+      "IAS / Civil Services": ["Class 10", "Class 11–12", "Graduation", "UPSC Core Prep", "UPSC Prelims", "UPSC Mains", "Personality Test", "LBSNAA Training"],
+      "MBBS / Doctor": ["Class 10", "Class 11–12 (BiPC)", "NEET UG Exam", "MBBS Degree", "NEET PG + MD/MS"],
+      "Software Engineer": ["Class 10", "Class 11–12 (MPC)", "B.Tech CS/IT", "Specialization", "Placements"],
+      "Chartered Accountant": ["Class 10", "Class 11–12", "CA Intermediate", "Articleship", "CA Final", "CA Career"],
+      "Bank PO / Clerk": ["Class 10", "Intermediate", "Graduation + Prep", "Appointment"],
+      "Defence Services": ["Class 10", "Class 11–12", "Training & Commission"],
+      "Teacher / Professor": ["Class 10–12", "Graduation + B.Ed", "PG + UGC NET"],
+      "IPS / Police Services": ["Class 10 & 12", "Graduation + UPSC", "SVPNPA Training"]
+    };
+
+    async function init() {
+      const authData = await requireAuth();
+      if (!authData) return;
+      
+      const user = authData.user;
+      const name = user.user_metadata?.full_name || user.email?.split('@')[0] || 'User';
+      document.getElementById('sName').textContent = name;
+
+      // Caching logic
+      const cacheKey = `careez_dash_${user.id}`;
+      const cached = sessionStorage.getItem(cacheKey);
+      
+      let profile, progress;
+      
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        profile = parsed.profile;
+        progress = parsed.progress;
+      } else {
+        // Parallel Fetch
+        const [profRes, progRes] = await Promise.all([
+          supabase.from('Profile').select('*').eq('id', user.id).single(),
+          supabase.from('Roadmap').select('career_id, stage_id').eq('user_id', user.id)
+        ]);
+
+        if (profRes.error || !profRes.data || !profRes.data.career) {
+          // If profile fails, check localStorage fallback
+          const localProfileRaw = localStorage.getItem('careez_profile');
+          if (localProfileRaw) {
+              try { profile = JSON.parse(localProfileRaw); } catch(_) {}
+          }
+          
+          if (!profile || !profile.career) {
+              window.location.href = 'student_details.html';
+              return;
+          }
+          progress = [];
+        } else {
+          profile = profRes.data;
+          progress = progRes.data;
+        }
+
+        // Save to cache
+        sessionStorage.setItem(cacheKey, JSON.stringify({ profile, progress, ts: Date.now() }));
+      }
+
+      const completions = {};
+      if (progress) {
+        progress.forEach(p => {
+          completions[`${p.career_id}_${p.stage_id}`] = true;
+        });
+      }
+
+      const now = new Date(); const h = now.getHours();
+      const greet = h < 12 ? 'Good Morning' : h < 17 ? 'Good Afternoon' : 'Good Evening';
+      document.getElementById('greetMsg').textContent = greet + ', ' + name + '! 👋';
+      document.getElementById('sCareer').textContent = profile.career;
+      document.getElementById('statCareer').textContent = profile.career;
+      document.getElementById('statStudy').textContent = (profile.study_hours || '—') + ' hrs';
+
+      // Daily tip
+      const tipIdx = now.getDate() % TIPS.length;
+      document.getElementById('dailyTip').textContent = TIPS[tipIdx];
+
+      // Progress
+      const stages = CAREER_DATA_LITE[profile.career] || [];
+      const eduStage = EDU_STAGE_MAP[profile.edu_level] || 0;
+      let done = 0;
+      stages.forEach((_, i) => { if (i < eduStage || completions[profile.career + '_' + i]) done++; });
+      const pct = stages.length ? Math.round(done / stages.length * 100) : 0;
+      document.getElementById('statPct').textContent = pct + '%';
+      document.getElementById('progFill').style.width = pct + '%';
+
+      const currentStageIdx = Math.min(eduStage, stages.length - 1);
+      document.getElementById('statStage').textContent = stages[currentStageIdx] || '—';
+
+      // Mini stages preview (show first 5)
+      const preview = document.getElementById('stagePreview');
+      preview.innerHTML = '';
+      stages.slice(0, 5).forEach((s, i) => {
+        const isDone = i < eduStage || completions[profile.career + '_' + i];
+        const isActive = !isDone && i === eduStage;
+        const dotCls = isDone ? 'ms-done' : isActive ? 'ms-active' : 'ms-locked';
+        const badgeCls = isDone ? 'msb-done' : isActive ? 'msb-active' : 'msb-locked';
+        const badgeText = isDone ? '✓ Done' : isActive ? '→ Active' : 'Upcoming';
+        preview.innerHTML += `<div class="mini-stage"><div class="ms-dot ${dotCls}"></div><div class="ms-text">${s}</div><span class="ms-badge ${badgeCls}">${badgeText}</span></div>`;
+      });
+      if (stages.length > 5) preview.innerHTML += `<div style="text-align:center;margin-top:.5rem"><a href="roadmap.html" style="color:var(--accent);font-size:.82rem;font-weight:600">+${stages.length - 5} more stages →</a></div>`;
+    }
+
+    window.toggleMobMenu = function() {
+      document.querySelector('.sidebar').classList.toggle('open');
+      document.getElementById('mobOverlay').classList.toggle('open');
+    };
+    window.closeMobMenu = function() {
+      document.querySelector('.sidebar').classList.remove('open');
+      document.getElementById('mobOverlay').classList.remove('open');
+    };
+    // Close sidebar when any nav link is clicked on mobile
+    document.querySelectorAll('.s-nav a').forEach(a => a.addEventListener('click', window.closeMobMenu));
+
+    window.toggleTheme = function () {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('careez_theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('careez_theme', 'light');
+      }
+      updateThemeBtn();
+    }
+
+    function updateThemeBtn() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+      if (icon) icon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      if (label) label.textContent = isLight ? 'Light Mode' : 'Dark Mode';
+    }
+
+    // Init theme on load
+    (function() {
+      const t = localStorage.getItem('careez_theme') || 'dark';
+      if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      updateThemeBtn();
+    })();
+
+    window.logout = async function () {
+      await signOut();
+      localStorage.removeItem('careez_logged_in');
+      window.location.href = 'login.html';
+    }
+
+    window.onload = init;
+  </script>
+</body>
+
+</html>

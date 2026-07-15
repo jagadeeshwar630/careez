@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareeZ | Create Account</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--bg:#06080f;--surface:#0d1117;--card:#111827;--border:rgba(99,102,241,.18);--accent:#6366f1;--text:#f1f5f9;--muted:#64748b;--error:#ef4444;--success:#22c55e}
+
+[data-theme="light"]{--bg:#f1f5f9;--surface:#ffffff;--card:#f0f4ff;--border:rgba(99,102,241,.18);--text:#0f172a;--muted:#64748b}
+[data-theme="light"] .toast.success{background:#dcfce7;color:#166534}
+[data-theme="light"] .toast.error{background:#fee2e2;color:#991b1b}
+
+.theme-toggle-float{position:fixed;top:1.5rem;right:1.5rem;background:var(--surface);border:1px solid var(--border);color:var(--text);width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .2s;z-index:200}
+.theme-toggle-float:hover{border-color:var(--accent);transform:translateY(-2px)}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
+.left{flex:1;display:flex;flex-direction:column;justify-content:center;padding:60px;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);position:relative;overflow:hidden}
+.left::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.left-logo{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:.5rem;margin-bottom:3rem;position:relative}
+.left h2{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#fff;margin-bottom:1rem;position:relative;line-height:1.2}
+.left p{color:rgba(255,255,255,.7);margin-bottom:2.5rem;line-height:1.7;font-size:.95rem;position:relative}
+.benefits{display:flex;flex-direction:column;gap:.9rem;position:relative}
+.benefit{display:flex;align-items:center;gap:.75rem;color:rgba(255,255,255,.85);font-size:.92rem}
+.benefit i{color:#a5b4fc;font-size:.85rem;width:16px}
+
+.right{flex:1;display:flex;flex-direction:column;justify-content:center;padding:60px;background:var(--surface)}
+.form-logo{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:.5rem;margin-bottom:2rem}
+.form-logo i{color:var(--accent)}
+h1{font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:800;margin-bottom:.4rem}
+.subtitle{color:var(--muted);margin-bottom:2rem;font-size:.95rem}
+
+.form-group{margin-bottom:1.1rem}
+.form-group label{display:block;font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.5px}
+.form-group input{width:100%;padding:.85rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Manrope',sans-serif;font-size:.95rem;transition:border-color .2s,box-shadow .2s;outline:none}
+.form-group input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(99,102,241,.12)}
+.form-group input::placeholder{color:var(--muted)}
+.form-group input.error{border-color:var(--error)}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+.submit-btn{width:100%;padding:1rem;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Manrope',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:1.5rem;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.submit-btn:hover{background:#4f46e5;transform:translateY(-1px);box-shadow:0 8px 20px rgba(99,102,241,.35)}
+.submit-btn:disabled{opacity:.7;cursor:not-allowed;transform:none}
+
+.google-btn{width:100%;padding:.9rem;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:10px;font-family:'Manrope',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;transition:all .2s;margin-bottom:0}
+.google-btn:hover{border-color:rgba(99,102,241,.5);background:rgba(99,102,241,.05);transform:translateY(-1px)}
+.google-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.google-btn svg{width:18px;height:18px;flex-shrink:0}
+
+.divider{text-align:center;color:var(--muted);font-size:.85rem;margin:1.25rem 0;position:relative}
+.divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border)}
+.divider span{background:var(--surface);padding:0 1rem;position:relative}
+
+.alt-text{text-align:center;font-size:.9rem;color:var(--muted);margin-top:1.25rem}
+.alt-text a{color:var(--accent);text-decoration:none;font-weight:600}
+
+.error-msg{color:var(--error);font-size:.8rem;margin-top:.3rem;display:none}
+.toast{position:fixed;bottom:2rem;right:2rem;padding:1rem 1.5rem;border-radius:10px;font-weight:600;font-size:.9rem;z-index:1000;animation:slideIn .3s ease;display:none}
+.toast.success{background:#052e16;border:1px solid #16a34a;color:#4ade80}
+.toast.error{background:#450a0a;border:1px solid var(--error);color:#fca5a5}
+
+.password-input-wrapper{position:relative}
+.password-toggle{position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--muted);cursor:pointer;padding:5px;transition:color .2s}
+.password-toggle:hover{color:var(--accent)}
+
+@keyframes slideIn{from{transform:translateX(100px);opacity:0}to{transform:translateX(0);opacity:1}}
+@media(max-width:768px){.left{display:none}.right{padding:2rem}}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle-float" id="themeToggleBtn" aria-label="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+
+<div class="left">
+  <div class="left-logo"><i class="fa-solid fa-graduation-cap" style="color:#a5b4fc"></i> CareeZ</div>
+  <h2>Start Your Career Journey Today</h2>
+  <p>Join thousands of Indian students who are planning their careers with clarity and confidence.</p>
+  <div class="benefits">
+    <div class="benefit"><i class="fa-solid fa-check"></i>Personalized career roadmaps based on your profile</div>
+    <div class="benefit"><i class="fa-solid fa-check"></i>12+ detailed career paths from scratch to success</div>
+    <div class="benefit"><i class="fa-solid fa-check"></i>Exam guides, PYQs, and curated resources</div>
+    <div class="benefit"><i class="fa-solid fa-check"></i>Track your progress stage by stage</div>
+    <div class="benefit"><i class="fa-solid fa-check"></i>100% Free — no hidden charges ever</div>
+  </div>
+</div>
+
+<div class="right">
+  <div class="form-logo"><i class="fa-solid fa-graduation-cap"></i> CareeZ</div>
+  <h1>Create your account</h1>
+  <p class="subtitle">Begin your career journey in under 2 minutes</p>
+
+  <button class="google-btn" id="googleBtn" type="button">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+    </svg>
+    Continue with Google
+  </button>
+
+  <div class="divider"><span>or sign up with email</span></div>
+
+  <form id="signupForm">
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="fullname" placeholder="e.g. Rahul Sharma" autocomplete="name">
+      <div class="error-msg" id="err-name">Please enter your full name</div>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+      <div class="error-msg" id="err-email">Please enter a valid email</div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Password</label>
+        <div class="password-input-wrapper">
+          <input type="password" id="password" placeholder="Min. 6 characters" autocomplete="new-password">
+          <i class="fa-solid fa-eye-slash password-toggle" id="togglePassword"></i>
+        </div>
+        <div class="error-msg" id="err-pass">Minimum 6 characters</div>
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <div class="password-input-wrapper">
+          <input type="password" id="confirm" placeholder="Repeat password" autocomplete="new-password">
+          <i class="fa-solid fa-eye-slash password-toggle" id="toggleConfirm"></i>
+        </div>
+        <div class="error-msg" id="err-confirm">Passwords don't match</div>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" id="signupBtn">
+      <i class="fa-solid fa-rocket"></i> Create Account & Continue
+    </button>
+  </form>
+
+  <div class="alt-text">Already have an account? <a href="login.html">Sign in</a></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // Theme init (prevent flash)
+  (function(){
+    const t = localStorage.getItem('careez_theme') || 'dark';
+    if(t==='light') document.documentElement.setAttribute('data-theme','light');
+  })();
+
+  const _ttBtn = document.getElementById('themeToggleBtn');
+  function _updateThemeIcon(){
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    if(_ttBtn) _ttBtn.innerHTML = isLight ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+  }
+  _updateThemeIcon();
+  if(_ttBtn) _ttBtn.addEventListener('click', function(){
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    if(isLight){
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('careez_theme','dark');
+    } else {
+      document.documentElement.setAttribute('data-theme','light');
+      localStorage.setItem('careez_theme','light');
+    }
+    _updateThemeIcon();
+  });
+
+  // Toggle Password Visibility (Non-module)
+  function setupPasswordToggle(inputId, toggleId) {
+    const input = document.getElementById(inputId);
+    const toggle = document.getElementById(toggleId);
+    if (toggle && input) {
+      toggle.addEventListener('click', () => {
+        const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+        input.setAttribute('type', type);
+        toggle.classList.toggle('fa-eye');
+        toggle.classList.toggle('fa-eye-slash');
+      });
+    }
+  }
+  setupPasswordToggle('password', 'togglePassword');
+  setupPasswordToggle('confirm', 'toggleConfirm');
+</script>
+
+<script type="module">
+import { supabase, redirectAfterLogin } from './supabase-config.js';
+
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3500);
+}
+
+// ── Handle OAuth callback (Google redirect back) ──────────────────
+const { data: { session: oauthSession } } = await supabase.auth.getSession();
+if (oauthSession) {
+  localStorage.setItem('careez_user', JSON.stringify(oauthSession.user));
+  localStorage.setItem('careez_logged_in', 'true');
+  await redirectAfterLogin(oauthSession.user);
+}
+
+// ── Google Sign-Up ────────────────────────────────────────────────
+document.getElementById('googleBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('googleBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connecting...';
+
+  try {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin + window.location.pathname
+      }
+    });
+    if (error) {
+      showToast(error.message, 'error');
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:18px;height:18px" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Continue with Google';
+    }
+    // If no error, Supabase redirects automatically
+  } catch (ex) {
+    showToast('Google sign-in failed. Please use Live Server (not file://).', 'error');
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:18px;height:18px" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Continue with Google';
+  }
+});
+
+// ── Email/Password Sign-Up ────────────────────────────────────────
+async function handleSignup() {
+  const name = document.getElementById('fullname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const pass = document.getElementById('password').value;
+  const confirm = document.getElementById('confirm').value;
+  let valid = true;
+
+  document.querySelectorAll('.error-msg').forEach(e => e.style.display = 'none');
+  document.querySelectorAll('input').forEach(i => i.classList.remove('error'));
+
+  if (!name) { document.getElementById('err-name').style.display = 'block'; document.getElementById('fullname').classList.add('error'); valid = false; }
+  if (!email || !email.includes('@')) { document.getElementById('err-email').style.display = 'block'; document.getElementById('email').classList.add('error'); valid = false; }
+  if (pass.length < 6) { document.getElementById('err-pass').style.display = 'block'; document.getElementById('password').classList.add('error'); valid = false; }
+  if (pass !== confirm) { document.getElementById('err-confirm').style.display = 'block'; document.getElementById('confirm').classList.add('error'); valid = false; }
+
+  if (!valid) return;
+
+  const btn = document.getElementById('signupBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Creating account...';
+
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: pass,
+      options: { data: { full_name: name } }
+    });
+
+    if (error) {
+      showToast(error.message, 'error');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-rocket"></i> Create Account & Continue';
+    } else {
+      // Store actual Supabase user object (has .id even when email confirmation is pending)
+      if (data.user) {
+        localStorage.setItem('careez_pending_user', JSON.stringify(data.user));
+        localStorage.setItem('careez_user', JSON.stringify(data.user));
+      }
+      localStorage.setItem('careez_logged_in', 'true');
+      showToast('Account created! Setting up your profile...', 'success');
+      setTimeout(() => window.location.href = 'student_details.html', 1200);
+    }
+  } catch (ex) {
+    showToast("Connection error. Please use Live Server.", 'error');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-rocket"></i> Create Account & Continue';
+  }
+}
+
+document.getElementById('signupForm').addEventListener('submit', e => {
+  e.preventDefault();
+  handleSignup();
+});
+</script>
+</body>
+</html>
